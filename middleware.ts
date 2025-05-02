@@ -6,6 +6,8 @@ const authRoutes = ['/', '/register']
 
 const publicRoutes = [...authRoutes, '/not-allowed']
 
+const providerRouterPrefix = '/provider'
+
 const adminRouterPrefix = '/admin'
 
 export async function middleware(request: NextRequest) {
@@ -25,11 +27,20 @@ export async function middleware(request: NextRequest) {
       const parsed = await verifyToken(token.value)
 
       if (authRoutes.includes(pathname)) {
-        const route = parsed.role === 'admin' ? '/admin' : '/user'
+        const route =
+          parsed.role === 'admin'
+            ? '/admin'
+            : parsed.role === 'provider'
+            ? '/provider'
+            : '/user'
         return NextResponse.redirect(new URL(route, request.url))
       }
 
-      if (pathname.startsWith(adminRouterPrefix) && parsed.role !== 'admin') {
+      if (
+        (pathname.startsWith(adminRouterPrefix) && parsed.role !== 'admin') ||
+        (pathname.startsWith(providerRouterPrefix) &&
+          parsed.role !== 'provider')
+      ) {
         return NextResponse.redirect(new URL('/not-allowed', request.url))
       }
     } catch (error) {

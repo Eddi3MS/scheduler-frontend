@@ -4,7 +4,7 @@ const key = new TextEncoder().encode(process.env.JWT_SECRET)
 
 type SessionData = {
   id: string
-  role: 'client' | 'admin'
+  role: 'client' | 'admin' | 'provider'
   email: string
   name: string
 }

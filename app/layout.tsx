@@ -33,7 +33,9 @@ export default async function RootLayout({
 
   return (
     <html lang="pt-br">
-      <body className={inter.className}>
+      <body
+        className={`${inter.className} bg-gradient-to-b from-gray-50 to-gray-100`}
+      >
         <UserContextProvider initUser={initUser}>
           {children}
           <Toaster />

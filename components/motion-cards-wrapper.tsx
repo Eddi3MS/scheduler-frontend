@@ -14,11 +14,11 @@ export default function MotionCardsWrapper({ children }: MotionWrapperProps) {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="flex flex-wrap gap-4"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
     >
       {Array.isArray(children)
         ? children.map((child, idx) => (
-            <motion.div key={idx} variants={itemVariants} className="flex-1">
+            <motion.div key={idx} variants={itemVariants}>
               {child}
             </motion.div>
           ))

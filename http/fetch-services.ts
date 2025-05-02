@@ -20,6 +20,42 @@ export async function getServices() {
   return data
 }
 
+export async function getOwnServices() {
+  const res = await fetchWithToken(
+    `${process.env.NEXT_PUBLIC_API_BASE}/services/own`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+
+  if (!res.ok) {
+    return []
+  }
+  const data = await res.json()
+  return data
+}
+
+export async function getServicesByProviderId(id: string) {
+  const res = await fetchWithToken(
+    `${process.env.NEXT_PUBLIC_API_BASE}/services/by-provider/${id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+
+  if (!res.ok) {
+    return []
+  }
+  const data = await res.json()
+  return data
+}
+
 export async function getService(id: string) {
   const res = await fetchWithToken(
     `${process.env.NEXT_PUBLIC_API_BASE}/services/${id}`,

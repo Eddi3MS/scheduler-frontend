@@ -1,9 +1,10 @@
+'use server'
 import { fetchWithToken } from '@/lib/fetch-with-token'
-import { ProviderSchema } from '@/types/forms'
+import { startOfDay } from 'date-fns'
 
-export async function getProviders() {
+export async function getClosedDates() {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/providers/`,
+    `${process.env.NEXT_PUBLIC_API_BASE}/closed-dates`,
     {
       method: 'GET',
       headers: {
@@ -16,13 +17,13 @@ export async function getProviders() {
     return []
   }
   const data = await res.json()
-  console.log('🚀 ~ getProviders ~ res:', data)
-  return data
+  if (!data.length) return []
+  return data.map((d: any) => startOfDay(new Date(d.date)))
 }
 
-export async function getProvider(id: string) {
+export async function getClosedDays() {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/providers/user-id/${id}`,
+    `${process.env.NEXT_PUBLIC_API_BASE}/weekly-closed-days`,
     {
       method: 'GET',
       headers: {
@@ -35,18 +36,20 @@ export async function getProvider(id: string) {
     return null
   }
   const data = await res.json()
-  return data
+  if (!data.length) return []
+
+  return data.map((d: any) => String(d.day))
 }
 
-export async function updateProvider(values: ProviderSchema) {
+export async function updateClosedDates(dates: Date[]) {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/providers`,
+    `${process.env.NEXT_PUBLIC_API_BASE}/closed-dates`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify({ dates: dates.map((date) => ({ date })) }),
     }
   )
 
@@ -57,15 +60,15 @@ export async function updateProvider(values: ProviderSchema) {
   return true
 }
 
-export async function createProvider(values: ProviderSchema) {
+export async function updateClosedDay(days: string[]) {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/providers/`,
+    `${process.env.NEXT_PUBLIC_API_BASE}/weekly-closed-days`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify({ days: days.map((d) => ({ day: Number(d) })) }),
     }
   )
 

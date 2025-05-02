@@ -17,13 +17,28 @@ export type RegisterSchema = z.infer<typeof registerSchema>
 
 // --- Provider Form Schema ---
 export const providerSchema = z.object({
-  name: z.string().min(2, 'Nome é obrigatório'),
   workingHours: z.array(
     z.object({
       start: z.string().min(1, 'Hora de início obrigatória'),
       end: z.string().min(1, 'Hora de fim obrigatória'),
     })
   ),
+  closedDates: z
+    .array(
+      z.string().min(1, 'Data obrigatória') // pode ser refinado para validar ISO ou yyyy-mm-dd
+    )
+    .optional(),
+  weeklyClosedDays: z
+    .array(
+      z
+        .number({
+          required_error: 'Dia da semana é obrigatório',
+          invalid_type_error: 'Dia da semana deve ser um número',
+        })
+        .min(0, 'Dia inválido')
+        .max(6, 'Dia inválido')
+    )
+    .optional(),
 })
 
 export type ProviderSchema = z.infer<typeof providerSchema>
