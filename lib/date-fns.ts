@@ -1,4 +1,11 @@
-import { format, isBefore, parse, startOfDay } from 'date-fns'
+import {
+  addHours,
+  format,
+  isAfter,
+  isBefore,
+  parse,
+  startOfDay,
+} from 'date-fns'
 
 export function formatDate(date: Date) {
   return format(new Date(date), 'yyyy-MM-dd')
@@ -21,4 +28,15 @@ export function isTimeBeforeNow(timeStr: string): boolean {
     new Date()
   )
   return isBefore(dateTime, new Date())
+}
+
+export function isTimeTwoHoursAfterNow(timeStr: string): boolean {
+  const todayStr = format(new Date(), 'yyyy-MM-dd')
+  const dateTime = parse(
+    `${todayStr} ${timeStr}`,
+    'yyyy-MM-dd HH:mm',
+    new Date()
+  )
+  const twoHoursFromNow = addHours(new Date(), 2)
+  return isAfter(dateTime, twoHoursFromNow)
 }

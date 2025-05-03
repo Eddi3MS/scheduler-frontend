@@ -1,6 +1,8 @@
 'use client'
-import DeleteButton from '@/components/delete-button'
+import ButtonWithConfirmation from '@/components/button-with-confirmation'
+import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
+import { Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 export default function ServiceDeleteButton({ id }: { id: string }) {
@@ -38,5 +40,16 @@ export default function ServiceDeleteButton({ id }: { id: string }) {
       })
     }
   }
-  return <DeleteButton action={handleDelete} />
+  return (
+    <ButtonWithConfirmation action={handleDelete} actionLabel="Excluir">
+      <Button
+        size="icon"
+        className=" cursor-pointer text-white"
+        variant="destructive"
+      >
+        <span className="sr-only">Excluir</span>
+        <Trash2 className="h-4 w-4" />
+      </Button>
+    </ButtonWithConfirmation>
+  )
 }

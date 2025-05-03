@@ -33,7 +33,24 @@ export async function getOwnAppointments() {
       },
     }
   )
-  console.log('🚀 ~ getOwnAppointments ~ res:', res)
+
+  if (!res.ok) {
+    return []
+  }
+  const data = await res.json()
+  return data
+}
+
+export async function getProviderAppointments() {
+  const res = await fetchWithToken(
+    `${process.env.NEXT_PUBLIC_API_BASE}/appointments/list-by-provider`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
 
   if (!res.ok) {
     return []

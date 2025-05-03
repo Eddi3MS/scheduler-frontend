@@ -5,15 +5,15 @@ import { useToast } from '@/hooks/use-toast'
 import { Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-export default function ProviderDeleteButton({ id }: { id: string }) {
+export default function AppointmentCancelButton({ id }: { id: string }) {
   const { toast } = useToast()
   const router = useRouter()
   const handleDelete = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE}/providers/${id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE}/appointments/cancel/${id}`,
         {
-          method: 'DELETE',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -32,6 +32,7 @@ export default function ProviderDeleteButton({ id }: { id: string }) {
       }
 
       router.refresh()
+      console.log('falhou')
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -41,14 +42,13 @@ export default function ProviderDeleteButton({ id }: { id: string }) {
     }
   }
   return (
-    <ButtonWithConfirmation action={handleDelete} actionLabel="Excluir">
+    <ButtonWithConfirmation action={handleDelete} actionLabel="Cancelar">
       <Button
-        size="icon"
-        className=" cursor-pointer text-white"
+        className="absolute bottom-2 right-2"
         variant="destructive"
+        size="sm"
       >
-        <span className="sr-only">Excluir</span>
-        <Trash2 className="h-4 w-4" />
+        Cancelar
       </Button>
     </ButtonWithConfirmation>
   )

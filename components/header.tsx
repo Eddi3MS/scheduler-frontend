@@ -42,6 +42,11 @@ export default function Header() {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Button asChild variant="ghost" className="cursor-pointer">
+                  <Link href="/user">Sua Agenda</Link>
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Button asChild variant="ghost" className="cursor-pointer">
                   <Link href="/scheduler">Agendar</Link>
                 </Button>
               </DropdownMenuItem>

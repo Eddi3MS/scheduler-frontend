@@ -17,7 +17,6 @@ export default async function Page() {
 
   const onProviderSubmit = async (values: ProviderSchema) => {
     'use server'
-    console.log('🚀 ~ onProviderSubmit ~ values:', values)
 
     return await updateProvider(values)
   }

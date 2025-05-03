@@ -16,7 +16,6 @@ export async function getProviders() {
     return []
   }
   const data = await res.json()
-  console.log('🚀 ~ getProviders ~ res:', data)
   return data
 }
 

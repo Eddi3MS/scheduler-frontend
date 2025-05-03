@@ -89,7 +89,7 @@ export default function DateStep({
                 </div>
               ))}
             </div>
-          ) : date ? (
+          ) : date && availableTime.length ? (
             <motion.div
               className="grid grid-cols-3 gap-2 border border-border p-3 rounded-md"
               variants={containerVariants}
@@ -118,6 +118,10 @@ export default function DateStep({
                 </motion.div>
               ))}
             </motion.div>
+          ) : date && !availableTime.length ? (
+            <p className="text-gray-500 text-center py-8">
+              Nenhum horário disponível
+            </p>
           ) : (
             <p className="text-gray-500 text-center py-8">Selecione uma data</p>
           )}

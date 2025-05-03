@@ -10,25 +10,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { useToast } from '@/hooks/use-toast'
-import { Trash2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import React from 'react'
+import { ReactNode } from 'react'
 
-export default function DeleteButton({ action }: { action: VoidFunction }) {
+export default function ButtonWithConfirmation({
+  action,
+  actionLabel,
+  children,
+}: {
+  action: VoidFunction
+  children: ReactNode
+  actionLabel: string
+}) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          size="icon"
-          className=" cursor-pointer text-white"
-          variant="destructive"
-        >
-          <span className="sr-only">Excluir</span>
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
@@ -38,7 +33,7 @@ export default function DeleteButton({ action }: { action: VoidFunction }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction onClick={action}>Deletar</AlertDialogAction>
+          <AlertDialogAction onClick={action}>{actionLabel}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

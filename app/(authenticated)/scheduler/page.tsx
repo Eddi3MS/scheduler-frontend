@@ -1,6 +1,6 @@
-import BookingForm from '@/components/booking-form'
 import { PageTransition } from '@/components/ui/page-transition'
 import { getProviders } from '@/http/fetch-providers'
+import BookingForm from './components/booking-form'
 
 export default async function Service() {
   const providers = await getProviders()
