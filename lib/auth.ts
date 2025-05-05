@@ -2,7 +2,7 @@
 
 import { jwtVerify } from 'jose'
 
-const key = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET)
+const key = new TextEncoder().encode(process.env.JWT_SECRET)
 
 type SessionData = {
   id: string
