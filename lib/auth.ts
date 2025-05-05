@@ -1,3 +1,5 @@
+'use server'
+
 import { jwtVerify } from 'jose'
 
 const key = new TextEncoder().encode(process.env.JWT_SECRET)
@@ -10,6 +12,8 @@ type SessionData = {
 }
 
 export async function verifyToken(input: string) {
+  console.log('🚀 ~ verifyToken ~ input:', input)
+  console.log('🚀 ~ verifyToken ~ key:', key)
   try {
     const { payload } = await jwtVerify(input, key, {
       algorithms: ['HS256'],
