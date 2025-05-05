@@ -27,7 +27,6 @@ export async function middleware(request: NextRequest) {
   if (token) {
     try {
       const parsed = await verifyToken(token.value)
-      console.log('🚀 ~ middleware ~ parsed:', parsed)
 
       if (!parsed) {
         const newUrl = new URL('/not-allowed', request.nextUrl.origin)
@@ -68,4 +67,5 @@ export const config = {
   matcher: [
     '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
   ],
+  runtime: 'nodejs',
 }
