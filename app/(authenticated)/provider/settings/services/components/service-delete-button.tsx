@@ -11,7 +11,7 @@ export default function ServiceDeleteButton({ id }: { id: string }) {
   const handleDelete = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE}/services/${id}`,
+        `${process.env.NEXT_PUBLIC_API_PATH}/api/services/${id}`,
         {
           method: 'DELETE',
           headers: {

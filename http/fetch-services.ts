@@ -4,7 +4,7 @@ import { ServiceSchema } from '@/types/forms'
 
 export async function getServices() {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/services`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/services`,
     {
       method: 'GET',
       headers: {
@@ -22,7 +22,7 @@ export async function getServices() {
 
 export async function getOwnServices() {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/services/own`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/services/own`,
     {
       method: 'GET',
       headers: {
@@ -40,7 +40,7 @@ export async function getOwnServices() {
 
 export async function getServicesByProviderId(id: string) {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/services/by-provider/${id}`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/services/by-provider/${id}`,
     {
       method: 'GET',
       headers: {
@@ -58,7 +58,7 @@ export async function getServicesByProviderId(id: string) {
 
 export async function getService(id: string) {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/services/${id}`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/services/${id}`,
     {
       method: 'GET',
       headers: {
@@ -76,16 +76,23 @@ export async function getService(id: string) {
 }
 
 export async function updateService(id: string, values: ServiceSchema) {
+  const formData = new FormData()
+  formData.append('name', values.name)
+  formData.append('price', values.price)
+  formData.append('duration', values.duration)
+  if (values.image) {
+    formData.append('image', values.image)
+  }
+
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/services/${id}`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/services/${id}`,
     {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
+      body: formData,
     }
   )
+  const a = await res.json()
+  console.log('🚀 ~ updateService ~ res:', a)
 
   if (!res.ok) {
     return false
@@ -95,14 +102,20 @@ export async function updateService(id: string, values: ServiceSchema) {
 }
 
 export async function createService(values: ServiceSchema) {
+  const formData = new FormData()
+  formData.append('name', values.name)
+  formData.append('price', values.price)
+  formData.append('providerId', values.providerId)
+  formData.append('duration', values.duration)
+  if (values.image) {
+    formData.append('image', values.image)
+  }
+
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/services/`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/services/`,
     {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
+      body: formData,
     }
   )
 

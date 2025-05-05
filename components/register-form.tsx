@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser } from '@/contexts/user-context'
+import { useUser } from '@/providers/user-context'
 import { AnimatedButton } from '@/components/ui/animated-button'
 import {
   Card,
@@ -46,7 +46,7 @@ export default function RegisterForm() {
   const onSubmit = async (values: RegisterSchema) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE}/user/register`,
+        `${process.env.NEXT_PUBLIC_API_PATH}/api/user/register`,
         {
           method: 'POST',
           headers: {

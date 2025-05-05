@@ -11,7 +11,7 @@ export default function ProviderDeleteButton({ id }: { id: string }) {
   const handleDelete = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE}/providers/${id}`,
+        `${process.env.NEXT_PUBLIC_API_PATH}/api/providers/${id}`,
         {
           method: 'DELETE',
           headers: {

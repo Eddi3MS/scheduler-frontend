@@ -1,9 +1,8 @@
+import getUserId from '@/actions/get-user-id'
 import { Toaster } from '@/components/ui/toaster'
-import { UserContextProvider } from '@/contexts/user-context'
-import { verifyToken } from '@/lib/auth'
+import { UserContextProvider } from '@/providers/user-context'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { cookies } from 'next/headers'
 import type React from 'react'
 import './globals.css'
 
@@ -14,22 +13,12 @@ export const metadata: Metadata = {
   description: 'Agende seus serviços de forma rápida e eficiente.',
 }
 
-const checkToken = async (token?: string) => {
-  if (!token) return null
-  try {
-    return await verifyToken(token)
-  } catch (error) {
-    return null
-  }
-}
-
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cookieStore = await cookies()
-  const initUser = await checkToken(cookieStore.get('token')?.value)
+  const initUser = await getUserId()
 
   return (
     <html lang="pt-br">

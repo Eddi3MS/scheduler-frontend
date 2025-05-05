@@ -1,19 +1,19 @@
+import getUserId from '@/actions/get-user-id'
 import { getProvider, updateProvider } from '@/http/fetch-providers'
-import { verifyToken } from '@/lib/auth'
 import { ProviderSchema } from '@/types/forms'
 import { ChevronLeft } from 'lucide-react'
-import { cookies } from 'next/headers'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import ProviderForm from '../components/provider-form'
 
 export default async function Page() {
-  const cookieStore = await cookies()
-  const token = cookieStore.get('token')?.value!
-  const user = await verifyToken(token)
+  const user = await getUserId()
 
-  const id = user.id
+  if (!user) {
+    redirect('/')
+  }
 
-  const provider = await getProvider(id)
+  const provider = await getProvider(user.id)
 
   const onProviderSubmit = async (values: ProviderSchema) => {
     'use server'
@@ -30,7 +30,15 @@ export default async function Page() {
         <ChevronLeft className="h-4 w-4" /> Voltar
       </Link>
 
-      <ProviderForm onSubmit={onProviderSubmit} initValues={provider} />
+      <ProviderForm
+        onSubmit={onProviderSubmit}
+        initValues={{
+          workingHours: provider.workingHours,
+          closedDates: provider.closedDates,
+          image: process.env.NEXT_PUBLIC_API_PATH + provider.image,
+          weeklyClosedDays: provider.weeklyClosedDays,
+        }}
+      />
     </>
   )
 }

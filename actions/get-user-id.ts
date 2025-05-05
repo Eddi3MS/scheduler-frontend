@@ -6,7 +6,11 @@ export default async function getUserId() {
   const cookieStore = await cookies()
   const token = cookieStore.get('token')?.value
 
-  const user = await verifyToken(token!)
+  if (!token) {
+    return null
+  }
 
-  return user.id
+  const res = await verifyToken(token)
+
+  return res
 }

@@ -1,14 +1,16 @@
 import getUserId from '@/actions/get-user-id'
 import { Button } from '@/components/ui/button'
-import { getProviderAppointments } from '@/http/fetch-appointment'
+import { getProviderFutureAppointments } from '@/http/fetch-appointment'
 import { getProvider } from '@/http/fetch-providers'
 import { ProviderAppointment } from '@/types/appointment'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import SchedulerList from './components/scheduler-list'
+import SchedulerList from '../components/scheduler-list'
 
 export default async function Page() {
-  const appointments: ProviderAppointment[] = await getProviderAppointments()
+  const appointments: ProviderAppointment[] =
+    await getProviderFutureAppointments()
+  console.log('🚀 ~ Page ~ appointments:', appointments)
   const user = await getUserId()
 
   if (!user) {

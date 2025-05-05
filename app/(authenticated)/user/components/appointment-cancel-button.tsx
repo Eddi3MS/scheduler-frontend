@@ -11,7 +11,7 @@ export default function AppointmentCancelButton({ id }: { id: string }) {
   const handleDelete = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE}/appointments/cancel/${id}`,
+        `${process.env.NEXT_PUBLIC_API_PATH}/api/appointments/cancel/${id}`,
         {
           method: 'GET',
           headers: {

@@ -9,6 +9,7 @@ import { Provider } from '@/types/provider'
 import { Pencil, Plus } from 'lucide-react'
 import Link from 'next/link'
 import ServiceDeleteButton from './components/service-delete-button'
+import Image from 'next/image'
 
 export default async function ServicesPage() {
   const services: any[] = await getOwnServices()
@@ -38,10 +39,16 @@ export default async function ServicesPage() {
               <CardContent className="p-4">
                 <div className="flex flex-col items-center">
                   <div className="relative mb-4">
-                    <img
-                      src="/placeholder.jpg"
+                    <Image
+                      src={
+                        service.image
+                          ? process.env.NEXT_PUBLIC_API_PATH + service.image
+                          : '/placeholder.jpg'
+                      }
+                      width={96}
+                      height={96}
                       alt={service.name}
-                      className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
+                      className="w-24 h-24 rounded-full object-cover object-center border-2 border-gray-200"
                     />
                   </div>
                   <h3 className="font-medium text-lg text-center uppercase">

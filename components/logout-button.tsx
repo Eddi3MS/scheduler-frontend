@@ -1,5 +1,5 @@
 'use client'
-import { useUser } from '@/contexts/user-context'
+import { useUser } from '@/providers/user-context'
 import { LogOut } from 'lucide-react'
 import { Button } from './ui/button'
 import { useRouter } from 'next/navigation'
@@ -21,8 +21,8 @@ export default function LogoutButton() {
   const router = useRouter()
   const handleLogout = async () => {
     await logout()
-    setUser(null)
     router.push('/')
+    setUser(null)
   }
   return (
     <AlertDialog>

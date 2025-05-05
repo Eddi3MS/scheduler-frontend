@@ -6,15 +6,21 @@ import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import ServiceForm from '../components/service-form'
 import getUserId from '@/actions/get-user-id'
+import { redirect } from 'next/navigation'
 
-export default async function CreateProvider() {
+export default async function CreateService() {
   const onProviderSubmit = async (values: ServiceSchema) => {
     'use server'
     return await createService(values)
   }
 
-  const id = await getUserId()
-  const provider = await getProvider(id)
+  const user = await getUserId()
+
+  if (!user) {
+    redirect('/')
+  }
+
+  const provider = await getProvider(user.id)
 
   return (
     <>

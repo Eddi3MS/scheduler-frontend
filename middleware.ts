@@ -10,6 +10,8 @@ const providerRouterPrefix = '/provider'
 
 const adminRouterPrefix = '/admin'
 
+const userRouterPrefix = '/user'
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const token = request.cookies.get('token')
@@ -26,6 +28,11 @@ export async function middleware(request: NextRequest) {
     try {
       const parsed = await verifyToken(token.value)
 
+      if (!parsed) {
+        const newUrl = new URL('/not-allowed', request.nextUrl.origin)
+        return NextResponse.redirect(newUrl)
+      }
+
       if (authRoutes.includes(pathname)) {
         const route =
           parsed.role === 'admin'
@@ -39,7 +46,8 @@ export async function middleware(request: NextRequest) {
       if (
         (pathname.startsWith(adminRouterPrefix) && parsed.role !== 'admin') ||
         (pathname.startsWith(providerRouterPrefix) &&
-          parsed.role !== 'provider')
+          parsed.role !== 'provider') ||
+        (pathname.startsWith(userRouterPrefix) && parsed.role === 'provider')
       ) {
         return NextResponse.redirect(new URL('/not-allowed', request.url))
       }

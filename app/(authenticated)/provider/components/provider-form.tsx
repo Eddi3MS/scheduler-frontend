@@ -13,13 +13,16 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { useToast } from '@/hooks/use-toast'
 import { isBeforeToday } from '@/lib/date-fns'
 import { containerVariants, itemVariants } from '@/lib/motion'
 import { providerSchema, ProviderSchema } from '@/types/forms'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format, parse } from 'date-fns'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState, useTransition } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 
 const weekdays = [
@@ -39,7 +42,9 @@ export default function ProviderForm({
   onSubmit: (values: ProviderSchema) => Promise<boolean>
   initValues?: ProviderSchema
 }) {
-  const router = useRouter()
+  const [preview, setPreview] = useState('')
+
+  const { toast } = useToast()
   const providerForm = useForm<ProviderSchema>({
     resolver: zodResolver(providerSchema),
     defaultValues: initValues
@@ -75,10 +80,25 @@ export default function ProviderForm({
   }
 
   const handleSubmit = async (values: ProviderSchema) => {
-    const res = await onSubmit(values)
-    if (!res) return
+    try {
+      const res = await onSubmit(values)
 
-    router.refresh()
+      if (!res) {
+        throw new Error('Falha ao atualizar dados.')
+      }
+
+      toast({
+        variant: 'success',
+        title: 'Sucesso!',
+        description: 'Dados atualizados.',
+      })
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Algo deu errado!',
+        description: 'Falha ao atualizar dado.',
+      })
+    }
   }
 
   return (
@@ -101,6 +121,71 @@ export default function ProviderForm({
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
               <div className="grid gap-4">
+                <FormField
+                  control={providerForm.control}
+                  name="image"
+                  render={({ field }) => {
+                    const currentValue = field.value
+
+                    const isFile = currentValue instanceof File
+                    const previewUrl =
+                      preview ||
+                      (isFile
+                        ? URL.createObjectURL(currentValue)
+                        : typeof currentValue === 'string'
+                        ? currentValue
+                        : null)
+
+                    return (
+                      <FormItem>
+                        <FormLabel>Foto do Profissional</FormLabel>
+                        <FormControl>
+                          <div className="flex flex-col gap-4">
+                            {previewUrl && (
+                              <Image
+                                src={previewUrl}
+                                alt="Preview"
+                                width={96}
+                                height={96}
+                                className="w-24 h-24 mx-auto rounded-full object-cover object-center border-2 border-gray-200"
+                              />
+                            )}
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() =>
+                                document.getElementById('fileInput')?.click()
+                              }
+                            >
+                              {currentValue
+                                ? 'Trocar imagem'
+                                : 'Selecionar imagem'}
+                            </Button>
+
+                            <input
+                              id="fileInput"
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0]
+                                if (file) {
+                                  field.onChange(file)
+                                  const reader = new FileReader()
+                                  reader.onloadend = () =>
+                                    setPreview(reader.result as string)
+                                  reader.readAsDataURL(file)
+                                }
+                              }}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )
+                  }}
+                />
+
                 <div>
                   <h3>Horário de Expediente</h3>
                   {fields.map((field, index) => (

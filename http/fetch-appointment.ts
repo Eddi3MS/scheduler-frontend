@@ -7,7 +7,7 @@ export async function getAvailableTime(
   date: string
 ) {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/appointments/get-available?serviceId=${serviceId}&providerId=${providerId}&date=${date}`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/appointments/get-available?serviceId=${serviceId}&providerId=${providerId}&date=${date}`,
     {
       method: 'GET',
       headers: {
@@ -25,7 +25,7 @@ export async function getAvailableTime(
 
 export async function getOwnAppointments() {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/appointments/me`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/appointments/me`,
     {
       method: 'GET',
       headers: {
@@ -43,7 +43,7 @@ export async function getOwnAppointments() {
 
 export async function getProviderAppointments() {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/appointments/list-by-provider`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/appointments/list-by-provider`,
     {
       method: 'GET',
       headers: {
@@ -59,9 +59,29 @@ export async function getProviderAppointments() {
   return data
 }
 
+export async function getProviderFutureAppointments() {
+  const res = await fetchWithToken(
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/appointments/list-future-by-provider`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+  console.log('🚀 ~ getProviderFutureAppointments ~ res:', res)
+
+  const data = await res.json()
+  console.log('🚀 ~ getProviderFutureAppointments ~ data:', data)
+  if (!res.ok) {
+    return []
+  }
+  return data
+}
+
 export async function createAppointment(values: any) {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/appointments/`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/appointments/`,
     {
       method: 'POST',
       headers: {

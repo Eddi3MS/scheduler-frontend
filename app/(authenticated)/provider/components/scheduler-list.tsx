@@ -16,6 +16,7 @@ import { ProviderAppointment } from '@/types/appointment'
 import { isToday, parseISO } from 'date-fns'
 import { useEffect, useState } from 'react'
 import AppointmentCancelButton from '../../user/components/appointment-cancel-button'
+import Link from 'next/link'
 
 export default function SchedulerList({
   appointmentsInit,
@@ -30,7 +31,7 @@ export default function SchedulerList({
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `${process.env.NEXT_PUBLIC_API_BASE}/events/events/${providerId}`,
+      `${process.env.NEXT_PUBLIC_API_PATH}/api/events/events/${providerId}`,
       { withCredentials: true }
     )
 
@@ -78,6 +79,16 @@ export default function SchedulerList({
   const appointmentsFiltered = showCanceled
     ? appointments
     : appointments.filter((ap) => !ap.canceled)
+
+  if (!appointments || !appointments.length) {
+    return (
+      <div className="grid place-items-center gap-4 p-8">
+        <p>Ainda não há nenhum agendamento hoje.</p>
+        <Link href="/provider/future">Ver agendamentos futuros?</Link>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="flex justify-between items-center">

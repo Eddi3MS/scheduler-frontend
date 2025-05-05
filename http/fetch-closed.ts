@@ -4,7 +4,7 @@ import { startOfDay } from 'date-fns'
 
 export async function getClosedDates() {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/closed-dates`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/closed-dates`,
     {
       method: 'GET',
       headers: {
@@ -23,7 +23,7 @@ export async function getClosedDates() {
 
 export async function getClosedDays() {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/weekly-closed-days`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/weekly-closed-days`,
     {
       method: 'GET',
       headers: {
@@ -43,7 +43,7 @@ export async function getClosedDays() {
 
 export async function updateClosedDates(dates: Date[]) {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/closed-dates`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/closed-dates`,
     {
       method: 'POST',
       headers: {
@@ -62,7 +62,7 @@ export async function updateClosedDates(dates: Date[]) {
 
 export async function updateClosedDay(days: string[]) {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/weekly-closed-days`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/weekly-closed-days`,
     {
       method: 'POST',
       headers: {

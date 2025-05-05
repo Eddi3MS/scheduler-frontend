@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser } from '@/contexts/user-context'
+import { useUser } from '@/providers/user-context'
 import { AnimatedButton } from '@/components/ui/animated-button'
 import {
   Card,
@@ -48,7 +48,7 @@ export default function LoginForm() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE}/user/login`,
+        `${process.env.NEXT_PUBLIC_API_PATH}/api/user/login`,
         {
           method: 'POST',
           headers: {
@@ -70,7 +70,12 @@ export default function LoginForm() {
         return
       }
 
-      const route = data.role === 'admin' ? '/admin' : '/user'
+      const route =
+        data.role === 'admin'
+          ? '/admin'
+          : data.role === 'provider'
+          ? '/provider'
+          : '/user'
 
       setUser(data)
       router.push(route)

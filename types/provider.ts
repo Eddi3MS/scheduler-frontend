@@ -4,6 +4,7 @@ export type Provider = {
   workingHours: { start: string; end: string; _id: string }[]
   weeklyClosedDays: number[]
   closedDates: string[]
+  image?: string
   userId: {
     _id: string
     name: string

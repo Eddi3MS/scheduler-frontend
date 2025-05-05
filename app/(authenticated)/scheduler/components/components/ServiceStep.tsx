@@ -14,6 +14,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { Service } from '@/types/service'
 import { getServicesByProviderId } from '@/http/fetch-services'
 import { formatBRL } from '@/lib/intl'
+import Image from 'next/image'
 
 export default function ServiceStep({
   providerId,
@@ -56,8 +57,14 @@ export default function ServiceStep({
               >
                 <CardContent className="p-6">
                   <div className="flex items-start">
-                    <div className={`p-3 rounded-full mr-4 bg-gray-100`}>
-                      <CheckCheck className={`h-6 w-6 text-gray-300`} />
+                    <div className="rounded-full mr-4">
+                      <Image
+                        src={'./placeholder.svg'}
+                        alt="Preview"
+                        width={48}
+                        height={48}
+                        className="w-12 h-12 mx-auto rounded-full object-cover object-center border-2 border-gray-200"
+                      />
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between items-start relative">
@@ -110,17 +117,17 @@ export default function ServiceStep({
                       whileHover={{ y: -5 }}
                       transition={{ type: 'spring', stiffness: 300 }}
                     >
-                      <div
-                        className={`p-3 rounded-full mr-4 ${
-                          service?._id === s._id ? 'bg-gray-200' : 'bg-gray-100'
-                        }`}
-                      >
-                        <CheckCheck
-                          className={`h-6 w-6 ${
-                            service?._id === s._id
-                              ? 'text-black'
-                              : 'text-gray-600'
-                          }`}
+                      <div className="rounded-full mr-4">
+                        <Image
+                          src={
+                            s.image
+                              ? process.env.NEXT_PUBLIC_API_PATH + s.image
+                              : './placeholder.svg'
+                          }
+                          alt="Preview"
+                          width={48}
+                          height={48}
+                          className="w-12 h-12 mx-auto rounded-full object-cover object-center"
                         />
                       </div>
                       <div className="flex-1">

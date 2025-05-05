@@ -3,6 +3,7 @@ import { ServiceSchema } from '@/types/forms'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import ServiceForm from '../../components/service-form'
+import { Service } from '@/types/service'
 
 export default async function UpdateProvider({
   params,
@@ -10,17 +11,18 @@ export default async function UpdateProvider({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const service: ServiceSchema = await getService(id)
+  const service: Service = await getService(id)
 
   const onProviderSubmit = async (values: ServiceSchema) => {
     'use server'
+    console.log('🚀 ~ onProviderSubmit ~ values:', values)
     return await updateService(id, values)
   }
 
   return (
     <>
       <Link
-        href="/admin/settings/services"
+        href="/provider/settings/services"
         className="underline flex items-center gap-1"
       >
         <ChevronLeft className="h-4 w-4" /> Voltar
@@ -33,6 +35,7 @@ export default async function UpdateProvider({
           providerId: service.providerId,
           price: service.price.toString(),
           duration: service.duration.toString(),
+          image: process.env.NEXT_PUBLIC_API_PATH + service.image,
         }}
       />
     </>

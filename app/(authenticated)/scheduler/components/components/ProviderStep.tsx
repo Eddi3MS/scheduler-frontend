@@ -3,6 +3,7 @@ import { containerVariants, itemVariants } from '@/lib/motion'
 import { Provider } from '@/types/provider'
 import { motion } from 'framer-motion'
 import { CheckCircle } from 'lucide-react'
+import Image from 'next/image'
 import { Dispatch, SetStateAction } from 'react'
 
 export default function ProviderStep({
@@ -36,9 +37,15 @@ export default function ProviderStep({
                 transition={{ type: 'spring', stiffness: 300 }}
               >
                 <div className="relative mb-4">
-                  <img
-                    src={'/placeholder.svg'}
+                  <Image
+                    src={
+                      pvd.image
+                        ? process.env.NEXT_PUBLIC_API_PATH + pvd.image
+                        : '/placeholder.svg'
+                    }
                     alt={pvd.userId.name}
+                    width={98}
+                    height={98}
                     className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
                   />
                   {pvd._id === provider?._id && (

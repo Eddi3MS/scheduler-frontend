@@ -17,6 +17,6 @@ export async function verifyToken(input: string) {
     return payload as SessionData
   } catch (error) {
     console.log(error)
-    throw new Error('Invalid token.')
+    return null
   }
 }

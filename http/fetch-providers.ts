@@ -3,7 +3,7 @@ import { ProviderSchema } from '@/types/forms'
 
 export async function getProviders() {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/providers/`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/providers/`,
     {
       method: 'GET',
       headers: {
@@ -21,7 +21,7 @@ export async function getProviders() {
 
 export async function getProvider(id: string) {
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/providers/user-id/${id}`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/providers/user-id/${id}`,
     {
       method: 'GET',
       headers: {
@@ -38,38 +38,33 @@ export async function getProvider(id: string) {
 }
 
 export async function updateProvider(values: ProviderSchema) {
+  const formData = new FormData()
+  formData.append('workingHours', JSON.stringify(values.workingHours))
+
+  if (values.closedDates)
+    formData.append('closedDates', JSON.stringify(values?.closedDates))
+
+  if (values.weeklyClosedDays)
+    formData.append('weeklyClosedDays', JSON.stringify(values.weeklyClosedDays))
+
+  if (values.image) {
+    formData.append('image', values.image)
+  }
+
   const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/providers`,
+    `${process.env.NEXT_PUBLIC_API_PATH}/api/providers`,
     {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
+      body: formData,
     }
   )
+
+  const a = await res.json()
+  console.log('🚀 ~ updateProvider ~ res:', a)
 
   if (!res.ok) {
     return false
   }
 
-  return true
-}
-
-export async function createProvider(values: ProviderSchema) {
-  const res = await fetchWithToken(
-    `${process.env.NEXT_PUBLIC_API_BASE}/providers/`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    }
-  )
-
-  if (!res.ok) {
-    return false
-  }
   return true
 }

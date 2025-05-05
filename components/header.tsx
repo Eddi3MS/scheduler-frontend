@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import LogoutButton from './logout-button'
-import { useUser } from '@/contexts/user-context'
+import { useUser } from '@/providers/user-context'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -55,7 +55,12 @@ export default function Header() {
             <>
               <DropdownMenuItem asChild>
                 <Button asChild variant="ghost" className="cursor-pointer">
-                  <Link href="/provider">Agenda</Link>
+                  <Link href="/provider">Agenda Hoje</Link>
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Button asChild variant="ghost" className="cursor-pointer">
+                  <Link href="/provider/future">Agenda Futura</Link>
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>

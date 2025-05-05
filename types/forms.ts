@@ -15,7 +15,22 @@ export const registerSchema = z.object({
 
 export type RegisterSchema = z.infer<typeof registerSchema>
 
-// --- Provider Form Schema ---
+const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+]
+
+const imageSchema = z.union([
+  z
+    .instanceof(File)
+    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+      message: 'Formatos suportados: .JPEG, .JPG, .PNG, .WEBP',
+    }),
+  z.string().url(), // Permite string (URL) em caso de edição
+])
+
 export const providerSchema = z.object({
   workingHours: z.array(
     z.object({
@@ -39,6 +54,7 @@ export const providerSchema = z.object({
         .max(6, 'Dia inválido')
     )
     .optional(),
+  image: imageSchema.optional(),
 })
 
 export type ProviderSchema = z.infer<typeof providerSchema>
@@ -48,6 +64,7 @@ export const serviceSchema = z.object({
   name: z.string().min(2, 'Nome do serviço é obrigatório'),
   price: z.string().min(1, 'Preço obrigatório'),
   duration: z.string().min(1, 'Duração obrigatória'),
+  image: imageSchema.optional(),
 })
 
 export type ServiceSchema = z.infer<typeof serviceSchema>
