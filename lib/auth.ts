@@ -13,6 +13,7 @@ type SessionData = {
 
 export async function verifyToken(input: string) {
   try {
+    console.log(process.env.JWT_SECRET_BD, input, key)
     const { payload } = await jwtVerify(input, key, {
       algorithms: ['HS256'],
     })

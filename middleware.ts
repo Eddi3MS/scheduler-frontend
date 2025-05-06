@@ -15,8 +15,10 @@ const userRouterPrefix = '/user'
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const token = request.cookies.get('token')
+  console.log('🚀 ~ middleware ~ token:', token)
 
   const isPublicRoute = publicRoutes.includes(pathname)
+  console.log('🚀 ~ middleware ~ isPublicRoute:', isPublicRoute)
   const res = NextResponse.next()
 
   if (!isPublicRoute && !token) {
@@ -27,6 +29,7 @@ export async function middleware(request: NextRequest) {
   if (token) {
     try {
       const parsed = await verifyToken(token.value)
+      console.log('🚀 ~ middleware ~ parsed:', parsed)
 
       if (!parsed) {
         const newUrl = new URL('/not-allowed', request.nextUrl.origin)
