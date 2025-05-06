@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
-import { registerSchema, RegisterSchema } from '@/types/forms.client'
+import { registerSchema, RegisterSchema } from '@/types/forms'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
