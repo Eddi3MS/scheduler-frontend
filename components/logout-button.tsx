@@ -24,7 +24,7 @@ export default function LogoutButton() {
     setUser(null)
     setTimeout(() => {
       router.push('/')
-    }, 50)
+    })
   }
   return (
     <AlertDialog>
