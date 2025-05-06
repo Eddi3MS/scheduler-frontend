@@ -19,7 +19,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import { useUser } from '@/providers/user-context'
-import { LoginSchema, loginSchema } from '@/types/forms'
+import { LoginSchema, loginSchema } from '@/types/forms.client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'

@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/select'
 import { formatBRL } from '@/lib/intl'
 import { containerVariants, itemVariants } from '@/lib/motion'
-import { serviceSchema, ServiceSchema } from '@/types/forms'
+import { serviceSchema, ServiceSchema } from '@/types/forms.client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
