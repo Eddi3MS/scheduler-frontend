@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'edsonmarcelo.com',
+        hostname: 'scheduler-api.edsonmarcelo.com.br',
       },
     ],
   },
