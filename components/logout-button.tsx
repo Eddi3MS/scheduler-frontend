@@ -21,8 +21,10 @@ export default function LogoutButton() {
   const router = useRouter()
   const handleLogout = async () => {
     await logout()
-    router.push('/')
     setUser(null)
+    setTimeout(() => {
+      router.push('/')
+    }, 300)
   }
   return (
     <AlertDialog>
