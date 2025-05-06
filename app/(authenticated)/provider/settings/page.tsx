@@ -23,7 +23,7 @@ export default async function Page() {
   return (
     <>
       <Link
-        href="/provider/settings/providers"
+        href="/provider/settings"
         className="underline flex items-center gap-1"
       >
         <ChevronLeft className="h-4 w-4" /> Voltar
