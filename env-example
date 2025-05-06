@@ -1,4 +1,4 @@
 PORT=3001
 
 NEXT_PUBLIC_API_PATH=http://localhost:3000/
-JWT_SECRET='same-secret-as-api'
+JWT_SECRET_BD='same-secret-as-api'
