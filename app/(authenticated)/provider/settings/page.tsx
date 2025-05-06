@@ -32,12 +32,16 @@ export default async function Page() {
       <ProviderForm
         onSubmit={onProviderSubmit}
         initValues={{
-          workingHours: provider?.workingHours,
-          closedDates: provider?.closedDates,
+          workingHours: provider?.workingHours
+            ? provider?.workingHours
+            : [{ start: '', end: '' }],
+          closedDates: provider?.closedDates ? provider?.closedDates : [],
           image: provider?.image
             ? process.env.NEXT_PUBLIC_API_PATH + provider?.image
             : '',
-          weeklyClosedDays: provider?.weeklyClosedDays,
+          weeklyClosedDays: provider?.weeklyClosedDays
+            ? provider?.weeklyClosedDays
+            : [],
         }}
       />
     </>
