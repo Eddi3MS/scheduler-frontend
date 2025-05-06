@@ -1,9 +1,8 @@
 import { getService, updateService } from '@/http/fetch-services'
-import { ServiceSchema } from '@/types/forms'
+import { Service } from '@/types/service'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import ServiceForm from '../../components/service-form'
-import { Service } from '@/types/service'
 
 export default async function UpdateProvider({
   params,
@@ -13,7 +12,7 @@ export default async function UpdateProvider({
   const { id } = await params
   const service: Service = await getService(id)
 
-  const onProviderSubmit = async (values: ServiceSchema) => {
+  const onProviderSubmit = async (values: any) => {
     'use server'
     console.log('🚀 ~ onProviderSubmit ~ values:', values)
     return await updateService(id, values)

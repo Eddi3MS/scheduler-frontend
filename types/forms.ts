@@ -68,17 +68,3 @@ export const serviceSchema = z.object({
 })
 
 export type ServiceSchema = z.infer<typeof serviceSchema>
-
-export const fixedClosedDaysSchema = z.object({
-  day: z.enum(['0', '1', '2', '3', '4', '5', '6'], {
-    required_error: 'Selecione um dia da semana.',
-  }),
-})
-
-export type FixedClosedDaysSchema = z.infer<typeof fixedClosedDaysSchema>
-
-export const specificClosedDaysSchema = z.object({
-  date: z.string().min(1, 'Selecione uma data.'),
-})
-
-export type SpecificClosedDaysSchema = z.infer<typeof specificClosedDaysSchema>

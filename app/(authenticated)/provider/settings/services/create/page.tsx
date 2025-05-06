@@ -1,15 +1,13 @@
-import { getProvider, getProviders } from '@/http/fetch-providers'
+import getUserId from '@/actions/get-user-id'
+import { getProvider } from '@/http/fetch-providers'
 import { createService } from '@/http/fetch-services'
-import { ServiceSchema } from '@/types/forms'
-import { Provider } from '@/types/provider'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
-import ServiceForm from '../components/service-form'
-import getUserId from '@/actions/get-user-id'
 import { redirect } from 'next/navigation'
+import ServiceForm from '../components/service-form'
 
 export default async function CreateService() {
-  const onProviderSubmit = async (values: ServiceSchema) => {
+  const onProviderSubmit = async (values: any) => {
     'use server'
     return await createService(values)
   }

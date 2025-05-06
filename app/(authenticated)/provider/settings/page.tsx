@@ -1,6 +1,5 @@
 import getUserId from '@/actions/get-user-id'
 import { getProvider, updateProvider } from '@/http/fetch-providers'
-import { ProviderSchema } from '@/types/forms'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -15,7 +14,7 @@ export default async function Page() {
 
   const provider = await getProvider(user.id)
 
-  const onProviderSubmit = async (values: ProviderSchema) => {
+  const onProviderSubmit = async (values: any) => {
     'use server'
 
     return await updateProvider(values)

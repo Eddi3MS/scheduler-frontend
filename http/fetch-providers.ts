@@ -1,5 +1,4 @@
 import { fetchWithToken } from '@/lib/fetch-with-token'
-import { ProviderSchema } from '@/types/forms'
 
 export async function getProviders() {
   const res = await fetchWithToken(
@@ -37,7 +36,7 @@ export async function getProvider(id: string) {
   return data
 }
 
-export async function updateProvider(values: ProviderSchema) {
+export async function updateProvider(values: any) {
   const formData = new FormData()
   formData.append('workingHours', JSON.stringify(values.workingHours))
 
@@ -58,9 +57,6 @@ export async function updateProvider(values: ProviderSchema) {
       body: formData,
     }
   )
-
-  const a = await res.json()
-  console.log('🚀 ~ updateProvider ~ res:', a)
 
   if (!res.ok) {
     return false

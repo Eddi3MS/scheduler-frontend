@@ -1,6 +1,5 @@
 'use server'
 import { fetchWithToken } from '@/lib/fetch-with-token'
-import { ServiceSchema } from '@/types/forms'
 
 export async function getServices() {
   const res = await fetchWithToken(
@@ -75,7 +74,7 @@ export async function getService(id: string) {
   return data
 }
 
-export async function updateService(id: string, values: ServiceSchema) {
+export async function updateService(id: string, values: any) {
   const formData = new FormData()
   formData.append('name', values.name)
   formData.append('price', values.price)
@@ -101,7 +100,7 @@ export async function updateService(id: string, values: ServiceSchema) {
   return true
 }
 
-export async function createService(values: ServiceSchema) {
+export async function createService(values: any) {
   const formData = new FormData()
   formData.append('name', values.name)
   formData.append('price', values.price)

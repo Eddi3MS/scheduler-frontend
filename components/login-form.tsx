@@ -1,6 +1,5 @@
 'use client'
 
-import { useUser } from '@/providers/user-context'
 import { AnimatedButton } from '@/components/ui/animated-button'
 import {
   Card,
@@ -19,7 +18,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
-import { LoginSchema, RegisterSchema, loginSchema } from '@/types/forms'
+import { useUser } from '@/providers/user-context'
+import { LoginSchema, loginSchema } from '@/types/forms'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
