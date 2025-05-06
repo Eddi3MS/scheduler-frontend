@@ -1,8 +1,14 @@
 'use server'
-import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 
 export default async function logout() {
   const cookieStore = await cookies()
-  cookieStore.delete('token')
+  cookieStore.set('token', '', {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'none',
+    domain: '.edsonmarcelo.com.br',
+    path: '/',
+    maxAge: 0,
+  })
 }
