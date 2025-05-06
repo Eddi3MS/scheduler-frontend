@@ -207,7 +207,11 @@ export default function BookingForm({ providers }: { providers: Provider[] }) {
                   </div>
                   <div className="flex items-center">
                     <img
-                      src={'/placeholder.svg'}
+                      src={
+                        provider?.image
+                          ? process.env.NEXT_PUBLIC_API_PATH + provider?.image
+                          : '/placeholder.svg'
+                      }
                       alt={provider?.userId.name}
                       className="w-10 h-10 rounded-full mr-3"
                     />
@@ -228,8 +232,12 @@ export default function BookingForm({ providers }: { providers: Provider[] }) {
                   </div>
                   <div className="flex items-center">
                     <img
-                      src={'/placeholder.svg'}
-                      alt={provider?.userId.name}
+                      src={
+                        service?.image
+                          ? process.env.NEXT_PUBLIC_API_PATH + service?.image
+                          : '/placeholder.svg'
+                      }
+                      alt={service?.name}
                       className="w-10 h-10 rounded-full mr-3"
                     />
                     <div>
