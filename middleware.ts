@@ -14,7 +14,7 @@ const userRouterPrefix = '/user'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const token = request.cookies.get('token')
+  const token = request.cookies.get('token')?.value
   console.log('🚀 ~ middleware ~ token:', token)
 
   const isPublicRoute = publicRoutes.includes(pathname)
@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
 
   if (token) {
     try {
-      const parsed = await verifyToken(token.value)
+      const parsed = await verifyToken(token)
       console.log('🚀 ~ middleware ~ parsed:', parsed)
 
       if (!parsed) {
