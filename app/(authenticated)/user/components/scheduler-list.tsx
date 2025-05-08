@@ -69,6 +69,8 @@ export default function SchedulerList({
               isBeforeToday(parseISO(appointment.date)) ||
               (isToday(parseISO(appointment.date)) &&
                 isTimeBeforeNow(appointment.time))
+            const isAfterToday =
+              isBefore && !isToday(parseISO(appointment.date))
             return (
               <Card
                 key={appointment._id}
@@ -85,10 +87,9 @@ export default function SchedulerList({
                     >
                       Cancelado
                     </Badge>
-                  ) : !isBefore &&
-                    ((isToday(parseISO(appointment.date)) &&
+                  ) : (isToday(parseISO(appointment.date)) &&
                       isTimeTwoHoursAfterNow(appointment.time)) ||
-                      !isToday(parseISO(appointment.date))) ? (
+                    isAfterToday ? (
                     <AppointmentCancelButton id={appointment._id} />
                   ) : null}
                   <div className="flex justify-between">
