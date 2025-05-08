@@ -5,6 +5,7 @@ import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import ServiceForm from '../components/service-form'
+import { Button } from '@/components/ui/button'
 
 export default async function CreateService() {
   const onProviderSubmit = async (values: any) => {
@@ -22,12 +23,12 @@ export default async function CreateService() {
 
   return (
     <>
-      <Link
-        href="/provider/settings/services"
-        className="underline flex items-center gap-1"
-      >
-        <ChevronLeft className="h-4 w-4" /> Voltar
-      </Link>
+      <Button asChild size="icon">
+        <Link href="/provider/settings/services" className="flex items-center">
+          <ChevronLeft className="h-4 w-4" />
+          <span className="sr-only">Voltar</span>
+        </Link>
+      </Button>
 
       <ServiceForm
         onSubmit={onProviderSubmit}

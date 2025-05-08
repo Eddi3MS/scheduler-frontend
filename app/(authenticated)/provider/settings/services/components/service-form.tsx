@@ -64,7 +64,6 @@ export default function ServiceForm({
 
   const handleSubmit = async (values: ServiceSchema) => {
     const res = await onSubmit(values)
-    console.log('🚀 ~ handleSubmit ~ res:', res)
     if (!res) return
 
     router.push('/provider/settings/services')

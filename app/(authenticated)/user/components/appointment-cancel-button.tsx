@@ -32,7 +32,6 @@ export default function AppointmentCancelButton({ id }: { id: string }) {
       }
 
       router.refresh()
-      console.log('falhou')
     } catch (error) {
       toast({
         variant: 'destructive',

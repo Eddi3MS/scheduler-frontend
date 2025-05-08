@@ -13,18 +13,26 @@ import {
 import { formatBRL } from '@/lib/intl'
 import { cn } from '@/lib/utils'
 import { isToday, parseISO } from 'date-fns'
-import { Calendar } from 'lucide-react'
+import { Calendar, CheckIcon, ListFilterIcon } from 'lucide-react'
 import Link from 'next/link'
 import AppointmentCancelButton from './appointment-cancel-button'
 import { useState } from 'react'
 import { Appointment } from '@/types/appointment'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 export default function SchedulerList({
   appointmentsInit,
 }: {
   appointmentsInit: Appointment[]
 }) {
-  const [showCanceled, setShowCanceled] = useState(false)
+  const [showCanceled, setShowCanceled] = useState(true)
 
   const handleShow = () => {
     setShowCanceled((curr) => !curr)
@@ -37,12 +45,21 @@ export default function SchedulerList({
     <>
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-semibold">Agendamentos:</h2>
-        <Button
-          className="bg-black text-white hover:bg-gray-800"
-          onClick={handleShow}
-        >
-          {showCanceled ? 'Esconder cancelados' : 'Exibir cancelados'}
-        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <ListFilterIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Filtros</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Button variant="ghost" onClick={handleShow} size="sm">
+                {showCanceled ? <CheckIcon /> : ''} Cancelados
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <ScrollArea className="h-[calc(100vh-200px)] w-full rounded-md border p-4">

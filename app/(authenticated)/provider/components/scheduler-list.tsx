@@ -3,6 +3,14 @@ import MotionCardsWrapper from '@/components/motion-cards-wrapper'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useToast } from '@/hooks/use-toast'
 import {
@@ -14,9 +22,10 @@ import { formatBRL } from '@/lib/intl'
 import { cn } from '@/lib/utils'
 import { ProviderAppointment } from '@/types/appointment'
 import { isToday, parseISO } from 'date-fns'
+import { CheckIcon, ListFilterIcon } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import AppointmentCancelButton from '../../user/components/appointment-cancel-button'
-import Link from 'next/link'
 
 export default function SchedulerList({
   appointmentsInit,
@@ -37,7 +46,6 @@ export default function SchedulerList({
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data)
-      console.log('New schedule received:', data)
       if (data.status === 'created') {
         setAppointments((curr) => {
           const newApp = [...curr, data.data]
@@ -66,8 +74,7 @@ export default function SchedulerList({
       }
     }
 
-    eventSource.onerror = () => {
-      console.error('EventSource failed.')
+    return () => {
       eventSource.close()
     }
   })
@@ -93,12 +100,21 @@ export default function SchedulerList({
     <>
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-semibold">Agenda Hoje:</h2>
-        <Button
-          className="bg-black text-white hover:bg-gray-800"
-          onClick={handleShow}
-        >
-          {showCanceled ? 'Esconder cancelados' : 'Exibir cancelados'}
-        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <ListFilterIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Filtros</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Button variant="ghost" onClick={handleShow} size="sm">
+                {showCanceled ? <CheckIcon /> : ''} Cancelados
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <ScrollArea className="h-[calc(100vh-200px)] w-full rounded-md border p-4">

@@ -90,8 +90,6 @@ export async function updateService(id: string, values: any) {
       body: formData,
     }
   )
-  const a = await res.json()
-  console.log('🚀 ~ updateService ~ res:', a)
 
   if (!res.ok) {
     return false

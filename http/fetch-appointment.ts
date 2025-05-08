@@ -69,10 +69,8 @@ export async function getProviderFutureAppointments() {
       },
     }
   )
-  console.log('🚀 ~ getProviderFutureAppointments ~ res:', res)
 
   const data = await res.json()
-  console.log('🚀 ~ getProviderFutureAppointments ~ data:', data)
   if (!res.ok) {
     return []
   }
@@ -90,13 +88,10 @@ export async function createAppointment(values: any) {
       body: JSON.stringify(values),
     }
   )
-  console.log('🚀 ~ createAppointment ~ res:', res)
 
   if (!res.ok) {
     return false
   }
 
-  const data = await res.json()
-  console.log('🚀 ~ createAppointment ~ data:', data)
   return true
 }

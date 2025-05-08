@@ -3,6 +3,7 @@ import { Service } from '@/types/service'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import ServiceForm from '../../components/service-form'
+import { Button } from '@/components/ui/button'
 
 export default async function UpdateProvider({
   params,
@@ -14,18 +15,17 @@ export default async function UpdateProvider({
 
   const onProviderSubmit = async (values: any) => {
     'use server'
-    console.log('🚀 ~ onProviderSubmit ~ values:', values)
     return await updateService(id, values)
   }
 
   return (
     <>
-      <Link
-        href="/provider/settings/services"
-        className="underline flex items-center gap-1"
-      >
-        <ChevronLeft className="h-4 w-4" /> Voltar
-      </Link>
+      <Button asChild size="icon">
+        <Link href="/provider/settings/services" className="flex items-center">
+          <ChevronLeft className="h-4 w-4" />
+          <span className="sr-only">Voltar</span>
+        </Link>
+      </Button>
 
       <ServiceForm
         onSubmit={onProviderSubmit}

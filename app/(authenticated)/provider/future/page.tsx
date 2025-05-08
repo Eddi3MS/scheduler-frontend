@@ -10,7 +10,7 @@ import SchedulerList from '../components/scheduler-list'
 export default async function Page() {
   const appointments: ProviderAppointment[] =
     await getProviderFutureAppointments()
-  console.log('🚀 ~ Page ~ appointments:', appointments)
+
   const user = await getUserId()
 
   if (!user) {

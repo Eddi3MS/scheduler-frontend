@@ -4,8 +4,8 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'scheduler-api.edsonmarcelo.com.br',
+        protocol: process.env.NODE_ENV === 'production' ? 'https' : 'http',
+        hostname: process.env.IMAGE_HOST_NAME!,
       },
     ],
   },
