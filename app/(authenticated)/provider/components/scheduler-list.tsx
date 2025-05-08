@@ -30,9 +30,11 @@ import AppointmentCancelButton from '../../user/components/appointment-cancel-bu
 export default function SchedulerList({
   appointmentsInit,
   providerId,
+  isFuture = false,
 }: {
   appointmentsInit: ProviderAppointment[]
   providerId: string
+  isFuture?: boolean
 }) {
   const [appointments, setAppointments] = useState(appointmentsInit)
   const [showCanceled, setShowCanceled] = useState(false)
@@ -90,8 +92,10 @@ export default function SchedulerList({
   if (!appointments || !appointments.length) {
     return (
       <div className="grid place-items-center gap-4 p-8">
-        <p>Ainda não há nenhum agendamento hoje.</p>
-        <Link href="/provider/future">Ver agendamentos futuros?</Link>
+        <p>Ainda não há nenhum agendamento.</p>
+        {!isFuture ? (
+          <Link href="/provider/future">Ver agendamentos futuros?</Link>
+        ) : null}
       </div>
     )
   }
@@ -99,7 +103,9 @@ export default function SchedulerList({
   return (
     <>
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold">Agenda Hoje:</h2>
+        <h2 className="text-2xl font-semibold">
+          Agenda {!isFuture ? 'Hoje' : null}:
+        </h2>
 
         <DropdownMenu>
           <DropdownMenuTrigger>
