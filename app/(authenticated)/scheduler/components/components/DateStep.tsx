@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Calendar } from '@/components/ui/calendar'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useToast } from '@/hooks/use-toast'
 import { getAvailableTime } from '@/http/fetch-appointment'
 import { formatDate, isBeforeToday } from '@/lib/date-fns'
 import { containerVariants, itemVariants } from '@/lib/motion'
@@ -27,6 +28,7 @@ export default function DateStep({
 }) {
   const [availableTime, setAvailableTime] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
+  const { toast } = useToast()
 
   useEffect(() => {
     if (!date || !serviceId || !provider) return
@@ -35,8 +37,19 @@ export default function DateStep({
 
     const getTime = async () => {
       setLoading(true)
+
       const res = await getAvailableTime(serviceId, provider._id, formattedDate)
-      setAvailableTime(res)
+
+      if (!res.success) {
+        toast({
+          variant: 'destructive',
+          title: 'Algo deu errado!',
+          description: res.error || 'Tente novamente mais tarde.',
+        })
+      } else {
+        setAvailableTime(res.data)
+      }
+
       setLoading(false)
     }
 

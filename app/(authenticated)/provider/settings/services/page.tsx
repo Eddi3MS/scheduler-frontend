@@ -1,18 +1,22 @@
 import MotionCardsWrapper from '@/components/motion-cards-wrapper'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { getProviders } from '@/http/fetch-providers'
-import { getOwnServices, getServices } from '@/http/fetch-services'
+import { getOwnServices } from '@/http/fetch-services'
 import { formatBRL } from '@/lib/intl'
-import { Provider } from '@/types/provider'
 import { Pencil, Plus } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import ServiceDeleteButton from './components/service-delete-button'
-import Image from 'next/image'
+import { redirect } from 'next/navigation'
 
 export default async function ServicesPage() {
-  const services: any[] = await getOwnServices()
+  const res = await getOwnServices()
+
+  if (!res.success) {
+    redirect(`/feedback?error=${res.error}`)
+  }
+
+  const services = res.data
 
   return (
     <>
@@ -29,7 +33,7 @@ export default async function ServicesPage() {
           </Link>
         </Button>
       </div>
-      {services.length ? (
+      {Array.isArray(services) && services.length ? (
         <MotionCardsWrapper>
           {services.map((service) => (
             <Card

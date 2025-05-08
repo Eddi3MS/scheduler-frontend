@@ -1,17 +1,27 @@
+import { Button } from '@/components/ui/button'
 import { getService, updateService } from '@/http/fetch-services'
-import { Service } from '@/types/service'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
+import { notFound, redirect } from 'next/navigation'
 import ServiceForm from '../../components/service-form'
-import { Button } from '@/components/ui/button'
 
-export default async function UpdateProvider({
+export default async function UpdateService({
   params,
 }: {
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const service: Service = await getService(id)
+  const res = await getService(id)
+
+  if (!res.success) {
+    redirect(`/feedback?error=${res.error}`)
+  }
+
+  if (!res.data) {
+    return notFound()
+  }
+
+  const service = res.data
 
   const onProviderSubmit = async (values: any) => {
     'use server'

@@ -1,6 +1,6 @@
 'use client'
 
-import { User } from '@/types/user'
+import { User as UserType } from '@/types/user'
 import {
   createContext,
   Dispatch,
@@ -9,6 +9,8 @@ import {
   useContext,
   useState,
 } from 'react'
+
+type User = UserType | null
 
 type UserContextData = {
   user: User

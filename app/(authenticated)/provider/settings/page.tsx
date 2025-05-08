@@ -13,13 +13,19 @@ export default async function Page() {
     redirect('/')
   }
 
-  const provider = await getProvider(user.id)
+  const provRes = await getProvider(user._id)
+
+  if (!provRes.success) {
+    redirect(`/feedback?error=${provRes.error}`)
+  }
 
   const onProviderSubmit = async (values: any) => {
     'use server'
 
     return await updateProvider(values)
   }
+
+  const provider = provRes.data
 
   return (
     <>

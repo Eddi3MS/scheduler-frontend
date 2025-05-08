@@ -1,14 +1,17 @@
-import { getOwnAppointments } from '@/http/fetch-appointment'
-import { Appointment } from '@/types/appointment'
-import SchedulerList from './components/scheduler-list'
-import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { getOwnAppointments } from '@/http/fetch-appointment'
+import Link from 'next/link'
+import SchedulerList from './components/scheduler-list'
+import { redirect } from 'next/navigation'
 
 export default async function UserPage() {
-  const appointments: Appointment[] = await getOwnAppointments()
+  const res = await getOwnAppointments()
 
-  if (!appointments || !appointments.length) {
+  if (!res.success) {
+    redirect(`/feedback?error=${res.error}`)
+  }
+
+  if (!res.data.length) {
     return (
       <div className="flex flex-col justify-center items-center">
         <h1 className="text-2xl font-bold">Nenhum dado para exibir!</h1>
@@ -21,5 +24,5 @@ export default async function UserPage() {
       </div>
     )
   }
-  return <SchedulerList appointmentsInit={appointments} />
+  return <SchedulerList appointmentsInit={res.data} />
 }

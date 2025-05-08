@@ -3,16 +3,22 @@ import { Card, CardContent } from '@/components/ui/card'
 import { getProviders } from '@/http/fetch-providers'
 import { Provider } from '@/types/provider'
 import ProviderDeleteButton from './components/provider-delete-button'
+import { redirect } from 'next/navigation'
 
 export default async function ProviderPage() {
-  const providers: Provider[] = await getProviders()
+  const res = await getProviders()
+
+  if (!res.success) {
+    redirect(`/feedback?error=${res.error}`)
+  }
+
   return (
     <>
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-semibold">Profissionais</h2>
       </div>
       <MotionCardsWrapper>
-        {providers.map((provider) => (
+        {res.data.map((provider) => (
           <Card
             key={provider._id}
             className="h-full min-w-44 transition-all hover:shadow-lg relative"

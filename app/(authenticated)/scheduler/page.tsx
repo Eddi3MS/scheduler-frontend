@@ -1,9 +1,14 @@
 import { PageTransition } from '@/components/ui/page-transition'
 import { getProviders } from '@/http/fetch-providers'
 import BookingForm from './components/booking-form'
+import { redirect } from 'next/navigation'
 
 export default async function Service() {
-  const providers = await getProviders()
+  const res = await getProviders()
+
+  if (!res.success) {
+    redirect(`/feedback?error=${res.error}`)
+  }
 
   return (
     <>
@@ -14,7 +19,7 @@ export default async function Service() {
             Complete o passo a passo para agendar seu atendimento
           </p>
 
-          <BookingForm providers={providers} />
+          <BookingForm providers={res.data} />
         </div>
       </PageTransition>
     </>

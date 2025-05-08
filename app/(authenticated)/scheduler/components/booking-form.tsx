@@ -79,32 +79,28 @@ export default function BookingForm({ providers }: { providers: Provider[] }) {
 
   const handleConfirm = async () => {
     setIsLoading(true)
-    try {
-      const res = createAppointment({
-        date: formatDate(date!),
-        time,
-        serviceId: service?._id,
-        providerId: provider?._id,
-      })
 
-      if (!res) {
-        toast({
-          variant: 'destructive',
-          title: 'Algo deu errado!',
-          description: 'Tente novamente mais tarde.',
-        })
-        return
-      }
-      setIsSuccess(true)
-    } catch (error) {
+    const res = await createAppointment({
+      date: formatDate(date!),
+      time,
+      serviceId: service?._id,
+      providerId: provider?._id,
+    })
+
+    if (!res.success) {
       toast({
         variant: 'destructive',
         title: 'Algo deu errado!',
-        description: 'Tente novamente mais tarde.',
+        description: res.error || 'Tente novamente mais tarde.',
       })
-    } finally {
-      setIsLoading(false)
+    } else {
+      toast({
+        variant: 'success',
+        title: 'Sucesso!',
+        description: 'Agendamento concluído com sucesso.',
+      })
     }
+    setIsSuccess(true)
   }
 
   const renderStepContent = () => {

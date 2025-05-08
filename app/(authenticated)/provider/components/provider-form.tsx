@@ -14,54 +14,17 @@ import {
 import { Input } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useToast } from '@/hooks/use-toast'
+import { ApiResponse } from '@/http/type'
 import { isBeforeToday } from '@/lib/date-fns'
 import { containerVariants, itemVariants } from '@/lib/motion'
-import { ACCEPTED_IMAGE_TYPES } from '@/types/forms'
+import { providerSchema, ProviderSchema } from '@/types/forms'
+import { Provider } from '@/types/provider'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format, parse } from 'date-fns'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
-import { z } from 'zod'
-
-const imageSchema = z.union([
-  z
-    .instanceof(File)
-    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
-      message: 'Formatos suportados: .JPEG, .JPG, .PNG, .WEBP',
-    }),
-  z.string().url(), // Permite string (URL) em caso de edição
-])
-
-const providerSchema = z.object({
-  workingHours: z.array(
-    z.object({
-      start: z.string().min(1, 'Hora de início obrigatória'),
-      end: z.string().min(1, 'Hora de fim obrigatória'),
-    })
-  ),
-  closedDates: z
-    .array(
-      z.string().min(1, 'Data obrigatória') // pode ser refinado para validar ISO ou yyyy-mm-dd
-    )
-    .optional(),
-  weeklyClosedDays: z
-    .array(
-      z
-        .number({
-          required_error: 'Dia da semana é obrigatório',
-          invalid_type_error: 'Dia da semana deve ser um número',
-        })
-        .min(0, 'Dia inválido')
-        .max(6, 'Dia inválido')
-    )
-    .optional(),
-  image: imageSchema.optional(),
-})
-
-type ProviderSchema = z.infer<typeof providerSchema>
 
 const weekdays = [
   { label: 'Dom', value: '0' },
@@ -77,7 +40,7 @@ export default function ProviderForm({
   onSubmit,
   initValues,
 }: {
-  onSubmit: (values: ProviderSchema) => Promise<boolean>
+  onSubmit: (values: ProviderSchema) => Promise<ApiResponse<Provider>>
   initValues?: ProviderSchema
 }) {
   const [preview, setPreview] = useState('')
@@ -118,23 +81,19 @@ export default function ProviderForm({
   }
 
   const handleSubmit = async (values: ProviderSchema) => {
-    try {
-      const res = await onSubmit(values)
+    const res = await onSubmit(values)
 
-      if (!res) {
-        throw new Error('Falha ao atualizar dados.')
-      }
-
-      toast({
-        variant: 'success',
-        title: 'Sucesso!',
-        description: 'Dados atualizados.',
-      })
-    } catch (error) {
+    if (!res.success) {
       toast({
         variant: 'destructive',
         title: 'Algo deu errado!',
         description: 'Falha ao atualizar dado.',
+      })
+    } else {
+      toast({
+        variant: 'success',
+        title: 'Sucesso!',
+        description: 'Dados atualizados.',
       })
     }
   }

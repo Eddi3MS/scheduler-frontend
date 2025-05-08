@@ -5,7 +5,7 @@ import { jwtVerify } from 'jose'
 const key = new TextEncoder().encode(process.env.JWT_SECRET_BD)
 
 type SessionData = {
-  id: string
+  _id: string
   role: 'client' | 'admin' | 'provider'
   email: string
   name: string

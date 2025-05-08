@@ -2,18 +2,24 @@ import { Card, CardContent } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { getUsers } from '@/http/fetch-users'
 import UpdateRoleButton from './components/update-role-button'
+import { redirect } from 'next/navigation'
 
 export default async function AdminPage() {
-  const users = await getUsers()
+  const res = await getUsers()
+
+  if (!res.success) {
+    redirect(`/feedback?error=${res.error}`)
+  }
+
   return (
     <>
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold">Agenda</h2>
+        <h1 className="text-2xl font-semibold">Usuários Cadastrados</h1>
       </div>
 
       <ScrollArea className="h-[calc(100vh-200px)] w-full rounded-md border p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {users.map((user: any) => {
+          {res.data.map((user) => {
             return (
               <div key={user._id}>
                 <Card
@@ -30,7 +36,9 @@ export default async function AdminPage() {
                       <span className="font-bold">Role:</span> {user.role}
                     </p>
 
-                    <UpdateRoleButton userId={user._id} />
+                    {user.role === 'client' ? (
+                      <UpdateRoleButton userId={user._id} role="provider" />
+                    ) : null}
                   </CardContent>
                 </Card>
               </div>

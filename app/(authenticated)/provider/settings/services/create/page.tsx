@@ -1,14 +1,15 @@
 import getUserId from '@/actions/get-user-id'
+import { Button } from '@/components/ui/button'
 import { getProvider } from '@/http/fetch-providers'
 import { createService } from '@/http/fetch-services'
+import { ServiceSchema } from '@/types/forms'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import ServiceForm from '../components/service-form'
-import { Button } from '@/components/ui/button'
 
 export default async function CreateService() {
-  const onProviderSubmit = async (values: any) => {
+  const onProviderSubmit = async (values: ServiceSchema) => {
     'use server'
     return await createService(values)
   }
@@ -19,7 +20,22 @@ export default async function CreateService() {
     redirect('/')
   }
 
-  const provider = await getProvider(user.id)
+  const provRes = await getProvider(user._id)
+
+  if (!provRes.success) {
+    redirect(`/feedback?error=${provRes.error}`)
+  }
+
+  if (!provRes.data) {
+    return (
+      <div className="grid place-items-center gap-4 p-8">
+        <p>Cadastre seus dados para começar.</p>
+        <Button asChild className="bg-black text-white hover:bg-gray-800">
+          <Link href="/provider/settings">Cadastrar</Link>
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -33,7 +49,7 @@ export default async function CreateService() {
       <ServiceForm
         onSubmit={onProviderSubmit}
         initValues={{
-          providerId: provider._id,
+          providerId: provRes.data._id,
           name: '',
           price: '',
           duration: '',

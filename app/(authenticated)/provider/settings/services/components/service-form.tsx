@@ -10,45 +10,29 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useToast } from '@/hooks/use-toast'
+import { ApiResponse } from '@/http/type'
 import { formatBRL } from '@/lib/intl'
 import { containerVariants, itemVariants } from '@/lib/motion'
-import { ACCEPTED_IMAGE_TYPES } from '@/types/forms'
+import { serviceSchema, ServiceSchema } from '@/types/forms'
+import { Service } from '@/types/service'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-
-const imageSchema = z.union([
-  z
-    .instanceof(File)
-    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
-      message: 'Formatos suportados: .JPEG, .JPG, .PNG, .WEBP',
-    }),
-  z.string().url(), // Permite string (URL) em caso de edição
-])
-
-export const serviceSchema = z.object({
-  providerId: z.string().min(1, 'Selecione um profissional'),
-  name: z.string().min(2, 'Nome do serviço é obrigatório'),
-  price: z.string().min(1, 'Preço obrigatório'),
-  duration: z.string().min(1, 'Duração obrigatória'),
-  image: imageSchema.optional(),
-})
-
-export type ServiceSchema = z.infer<typeof serviceSchema>
 
 export default function ServiceForm({
   onSubmit,
   initValues,
 }: {
-  onSubmit: (values: ServiceSchema) => Promise<boolean>
+  onSubmit: (values: ServiceSchema) => Promise<ApiResponse<Service | null>>
   initValues?: ServiceSchema
 }) {
   const [preview, setPreview] = useState('')
   const router = useRouter()
+  const { toast } = useToast()
 
   const serviceForm = useForm<ServiceSchema>({
     resolver: zodResolver(serviceSchema),
@@ -64,9 +48,15 @@ export default function ServiceForm({
 
   const handleSubmit = async (values: ServiceSchema) => {
     const res = await onSubmit(values)
-    if (!res) return
-
-    router.push('/provider/settings/services')
+    if (!res.success) {
+      toast({
+        variant: 'destructive',
+        title: 'Algo deu errado!',
+        description: res.error || 'Falha ao atualizar dado.',
+      })
+    } else {
+      router.push('/provider/settings/services')
+    }
   }
 
   return (

@@ -21,3 +21,46 @@ export const ACCEPTED_IMAGE_TYPES = [
   'image/png',
   'image/webp',
 ]
+
+const imageSchema = z.union([
+  z
+    .instanceof(File)
+    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+      message: 'Formatos suportados: .JPEG, .JPG, .PNG, .WEBP',
+    }),
+  z.string().url(), // Permite string (URL) em caso de edição
+])
+
+export const serviceSchema = z.object({
+  providerId: z.string().min(1, 'Selecione um profissional'),
+  name: z.string().min(2, 'Nome do serviço é obrigatório'),
+  price: z.string().min(1, 'Preço obrigatório'),
+  duration: z.string().min(1, 'Duração obrigatória'),
+  image: imageSchema.optional(),
+})
+
+export type ServiceSchema = z.infer<typeof serviceSchema>
+
+export const providerSchema = z.object({
+  workingHours: z.array(
+    z.object({
+      start: z.string().min(1, 'Hora de início obrigatória'),
+      end: z.string().min(1, 'Hora de fim obrigatória'),
+    })
+  ),
+  closedDates: z.array(z.string().min(1, 'Data obrigatória')).optional(),
+  weeklyClosedDays: z
+    .array(
+      z
+        .number({
+          required_error: 'Dia da semana é obrigatório',
+          invalid_type_error: 'Dia da semana deve ser um número',
+        })
+        .min(0, 'Dia inválido')
+        .max(6, 'Dia inválido')
+    )
+    .optional(),
+  image: imageSchema.optional(),
+})
+
+export type ProviderSchema = z.infer<typeof providerSchema>

@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
-import { containerVariants, itemVariants } from '@/lib/motion'
-import { Provider } from '@/types/provider'
-import { motion } from 'framer-motion'
-import {
-  CheckCheck,
-  CheckCircle,
-  Clock,
-  DollarSign,
-  Loader2Icon,
-} from 'lucide-react'
-import { Dispatch, SetStateAction, useState } from 'react'
-import { Service } from '@/types/service'
+import { useToast } from '@/hooks/use-toast'
 import { getServicesByProviderId } from '@/http/fetch-services'
 import { formatBRL } from '@/lib/intl'
+import { containerVariants, itemVariants } from '@/lib/motion'
+import { Service } from '@/types/service'
+import { motion } from 'framer-motion'
+import { CheckCircle, Clock, DollarSign } from 'lucide-react'
 import Image from 'next/image'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 export default function ServiceStep({
   providerId,
@@ -27,14 +20,23 @@ export default function ServiceStep({
 }) {
   const [services, setServices] = useState<Service[]>([])
   const [loading, setLoading] = useState(true)
-
+  const { toast } = useToast()
   useEffect(() => {
     if (!providerId) return
 
     const getServices = async () => {
       setLoading(true)
       const res = await getServicesByProviderId(providerId)
-      setServices(res)
+
+      if (!res.success) {
+        toast({
+          variant: 'destructive',
+          title: 'Algo deu errado!',
+          description: res.error || 'Falha ao buscar serviços.',
+        })
+      } else {
+        setServices(res.data)
+      }
       setLoading(false)
     }
 
