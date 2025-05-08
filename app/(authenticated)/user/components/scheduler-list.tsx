@@ -70,7 +70,8 @@ export default function SchedulerList({
               (isToday(parseISO(appointment.date)) &&
                 isTimeBeforeNow(appointment.time))
             const isAfterToday =
-              !isBefore && !isToday(parseISO(appointment.date))
+              !isBeforeToday(parseISO(appointment.date)) &&
+              !isToday(parseISO(appointment.date))
             return (
               <Card
                 key={appointment._id}
