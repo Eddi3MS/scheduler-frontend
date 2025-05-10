@@ -120,6 +120,7 @@ export default function LoginForm() {
                         <Input
                           type="email"
                           placeholder="seu@email.com"
+                          autoComplete="username"
                           {...field}
                         />
                       </FormControl>
