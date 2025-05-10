@@ -1,8 +1,5 @@
 'use client'
-import { useUser } from '@/providers/user-context'
-import { LogOut } from 'lucide-react'
-import { Button } from './ui/button'
-import { useRouter } from 'next/navigation'
+import logout from '@/actions/logout'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,20 +11,24 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import logout from '@/actions/logout'
+import { useUser } from '@/providers/user-context'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { Button } from './ui/button'
 
 export default function LogoutButton() {
+  const [open, setOpen] = useState(false)
   const { setUser } = useUser()
   const router = useRouter()
   const handleLogout = async () => {
     await logout()
-    setTimeout(() => {
-      router.push('/')
-    }, 100)
+    setOpen(false)
     setUser(null)
+
+    router.push('/')
   }
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button
           variant="ghost"
