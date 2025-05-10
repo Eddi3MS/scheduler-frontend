@@ -24,8 +24,7 @@ export default function LogoutButton() {
     await logout()
     setOpen(false)
     setUser(null)
-
-    router.push('/')
+    router.refresh()
   }
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
