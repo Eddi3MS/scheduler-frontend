@@ -1,6 +1,5 @@
 import getUserId from '@/actions/get-user-id'
 import { Button } from '@/components/ui/button'
-import { getProviderAppointments } from '@/http/fetch-appointment'
 import { getProvider } from '@/http/fetch-providers'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -29,13 +28,6 @@ export default async function Page() {
       </div>
     )
   }
-  const res = await getProviderAppointments()
 
-  if (!res.success) {
-    redirect(`/feedback?error=${res.error}`)
-  }
-
-  return (
-    <SchedulerList appointmentsInit={res.data} providerId={provRes.data._id} />
-  )
+  return <SchedulerList providerId={provRes.data._id} />
 }

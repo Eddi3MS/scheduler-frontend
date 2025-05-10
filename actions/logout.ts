@@ -7,7 +7,7 @@ export default async function logout() {
     secure: true,
     httpOnly: true,
     sameSite: 'none',
-    domain: '.edsonmarcelo.com.br',
+    domain: process.env.COOKIE_DOMAIN,
     path: '/',
     maxAge: 0,
   })

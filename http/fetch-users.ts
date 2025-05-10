@@ -1,7 +1,7 @@
 'use server'
 import { fetchWithToken } from '@/lib/fetch-with-token'
-import { ApiResponse } from './type'
 import { User } from '@/types/user'
+import { ApiResponse } from './type'
 
 export async function getUsers(): Promise<ApiResponse<User[]>> {
   try {

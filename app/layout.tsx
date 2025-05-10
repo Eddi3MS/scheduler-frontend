@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import type React from 'react'
 import './globals.css'
+import { QueryProvider } from '@/providers/query-provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,10 +26,12 @@ export default async function RootLayout({
       <body
         className={`${inter.className} bg-gradient-to-b from-gray-50 to-gray-100`}
       >
-        <UserContextProvider initUser={initUser}>
-          {children}
-          <Toaster />
-        </UserContextProvider>
+        <QueryProvider>
+          <UserContextProvider initUser={initUser}>
+            {children}
+            <Toaster />
+          </UserContextProvider>
+        </QueryProvider>
       </body>
     </html>
   )

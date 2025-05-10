@@ -3,6 +3,14 @@ import MotionCardsWrapper from '@/components/motion-cards-wrapper'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   formatDateToDDMMYYYY,
@@ -12,20 +20,11 @@ import {
 } from '@/lib/date-fns'
 import { formatBRL } from '@/lib/intl'
 import { cn } from '@/lib/utils'
-import { isToday, parseISO } from 'date-fns'
-import { Calendar, CheckIcon, ListFilterIcon } from 'lucide-react'
-import Link from 'next/link'
-import AppointmentCancelButton from './appointment-cancel-button'
-import { useState } from 'react'
 import { Appointment } from '@/types/appointment'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { isToday, parseISO } from 'date-fns'
+import { CheckIcon, ListFilterIcon } from 'lucide-react'
+import { useState } from 'react'
+import AppointmentCancelButton from './appointment-cancel-button'
 
 export default function SchedulerList({
   appointmentsInit,
