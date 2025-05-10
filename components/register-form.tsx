@@ -166,6 +166,7 @@ export default function RegisterForm() {
                         <Input
                           {...field}
                           placeholder="Digite sua senha"
+                          autoComplete="new-password"
                           type="password"
                         />
                       </FormControl>
