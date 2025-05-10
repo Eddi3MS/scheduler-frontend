@@ -17,7 +17,7 @@ export default async function AdminPage() {
         <h1 className="text-2xl font-semibold">Usuários Cadastrados</h1>
       </div>
 
-      <ScrollArea className="h-[calc(100vh-200px)] w-full rounded-md border p-4">
+      <ScrollArea className="h-[calc(100dvh-200px)] w-full rounded-md border p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {res.data.map((user) => {
             return (

@@ -61,7 +61,7 @@ export default function SchedulerList({
         </DropdownMenu>
       </div>
 
-      <ScrollArea className="h-[calc(100vh-200px)] w-full rounded-md border p-4">
+      <ScrollArea className="h-[calc(100dvh-200px)] w-full rounded-md border p-4">
         <MotionCardsWrapper>
           {appointmentsFiltered.map((appointment) => {
             const isBefore =
