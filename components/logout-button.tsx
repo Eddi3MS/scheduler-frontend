@@ -11,23 +11,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { useUser } from '@/providers/user-context'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { Button } from './ui/button'
 
 export default function LogoutButton() {
-  const [open, setOpen] = useState(false)
-  const { setUser } = useUser()
-  const router = useRouter()
   const handleLogout = async () => {
     await logout()
-    setOpen(false)
-    setUser(null)
-    router.refresh()
+
+    window.location.reload()
   }
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
+    <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
           variant="ghost"
