@@ -262,7 +262,7 @@ export default function ProviderForm({
                     <ToggleGroupItem
                       key={day.value}
                       value={day.value}
-                      className="w-full"
+                      className="w-full focus:bg-transparent focus:text-black"
                     >
                       {day.label}
                     </ToggleGroupItem>
