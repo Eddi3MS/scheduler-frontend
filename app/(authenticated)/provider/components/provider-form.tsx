@@ -22,7 +22,9 @@ import { Provider } from '@/types/provider'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format, parse } from 'date-fns'
 import { motion } from 'framer-motion'
+import { ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 
@@ -105,19 +107,27 @@ export default function ProviderForm({
       animate="visible"
       className="flex flex-col gap-6"
     >
-      <Card className="h-full flex flex-col">
-        <CardHeader className="p-4">
-          <motion.h2 variants={itemVariants} className="text-2xl font-bold">
-            Configurações
-          </motion.h2>
-        </CardHeader>
-        <CardContent className="px-4 pb-4 flex-1">
-          <Form {...providerForm}>
-            <form
-              onSubmit={providerForm.handleSubmit(handleSubmit)}
-              className="grid grid-cols-1 md:grid-cols-2 gap-4"
-            >
-              <div className="grid gap-4">
+      <div className="flex gap-4 items-center">
+        <Button asChild size="icon">
+          <Link href="/provider" className="flex items-center">
+            <ChevronLeft className="h-4 w-4" />
+            <span className="sr-only">Voltar</span>
+          </Link>
+        </Button>
+
+        <motion.h2 variants={itemVariants} className="text-2xl font-bold">
+          Configurações
+        </motion.h2>
+      </div>
+
+      <Form {...providerForm}>
+        <form
+          onSubmit={providerForm.handleSubmit(handleSubmit)}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          <div className="grid gap-4">
+            <Card>
+              <CardContent className="p-4">
                 <FormField
                   control={providerForm.control}
                   name="image"
@@ -135,7 +145,7 @@ export default function ProviderForm({
 
                     return (
                       <FormItem>
-                        <FormLabel>Foto do Profissional</FormLabel>
+                        <FormLabel>Sua foto</FormLabel>
                         <FormControl>
                           <div className="flex flex-col gap-4">
                             {previewUrl && (
@@ -182,122 +192,131 @@ export default function ProviderForm({
                     )
                   }}
                 />
+              </CardContent>
+            </Card>
 
-                <div>
-                  <h3>Horário de Expediente</h3>
-                  {fields.map((field, index) => (
-                    <div key={field.id} className="flex items-end gap-2 mt-4">
-                      <FormField
-                        control={providerForm.control}
-                        name={`workingHours.${index}.start`}
-                        render={({ field }) => (
-                          <FormItem className="flex-1 ">
-                            <FormLabel>Início</FormLabel>
-                            <FormControl>
-                              <Input type="time" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={providerForm.control}
-                        name={`workingHours.${index}.end`}
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel>Fim</FormLabel>
-                            <FormControl>
-                              <Input type="time" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      {index > 0 ? (
-                        <Button
-                          type="button"
-                          onClick={() => remove(index)}
-                          size="icon"
-                          variant="destructive"
-                        >
-                          -
-                        </Button>
-                      ) : null}
-                    </div>
-                  ))}
-
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => append({ start: '', end: '' })}
-                    className="w-full mt-4"
-                  >
-                    + Adicionar Horário
-                  </Button>
-                </div>
-                <div>
-                  <h3>Dias da Semana Fechados</h3>
-                  <ToggleGroup
-                    type="multiple"
-                    className="grid grid-cols-4 gap-2 border-border border p-2 rounded-md mt-4"
-                    value={selectedDays}
-                    onValueChange={handleToggleChange}
-                  >
-                    {weekdays.map((day) => (
-                      <ToggleGroupItem
-                        key={day.value}
-                        value={day.value}
-                        className="w-full"
+            <Card>
+              <CardContent className="p-4">
+                <h3>Horário de Expediente</h3>
+                {fields.map((field, index) => (
+                  <div key={field.id} className="flex items-end gap-2 mt-4">
+                    <FormField
+                      control={providerForm.control}
+                      name={`workingHours.${index}.start`}
+                      render={({ field }) => (
+                        <FormItem className="flex-1 ">
+                          <FormLabel>Início</FormLabel>
+                          <FormControl>
+                            <Input type="time" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={providerForm.control}
+                      name={`workingHours.${index}.end`}
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Fim</FormLabel>
+                          <FormControl>
+                            <Input type="time" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {index > 0 ? (
+                      <Button
+                        type="button"
+                        onClick={() => remove(index)}
+                        size="icon"
+                        variant="destructive"
                       >
-                        {day.label}
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
-                </div>
-              </div>
-              <div>
-                <h3>Dias específicos Fechados</h3>
+                        -
+                      </Button>
+                    ) : null}
+                  </div>
+                ))}
 
-                <Calendar
-                  mode="multiple"
-                  selected={selectedDates}
-                  onSelect={(dates) => handleCalendarChange(dates ?? [])}
-                  className="rounded-md border max-w-fit mx-auto mt-4"
-                  disabled={(date) =>
-                    isBeforeToday(date) ||
-                    watch('weeklyClosedDays')!.some(
-                      (day) => day === date.getDay()
-                    )
-                  }
-                  showOutsideDays={false}
-                />
-                <div className="text-sm mt-4 text-center">
-                  {selectedDates.length > 0 ? (
-                    <div>
-                      <p>Dias fechados: </p>
-                      <div className="flex gap-1 flex-wrap justify-center mt-2">
-                        {selectedDates.map((d, i) => (
-                          <Badge variant="outline" key={i}>
-                            {format(d, 'dd/MM')}
-                          </Badge>
-                        ))}
-                      </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => append({ start: '', end: '' })}
+                  className="w-full mt-4"
+                >
+                  + Adicionar Horário
+                </Button>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4">
+                <h3>Dias da Semana Fechados</h3>
+                <ToggleGroup
+                  type="multiple"
+                  className="grid grid-cols-4 gap-2 border-border border p-2 rounded-md mt-4"
+                  value={selectedDays}
+                  onValueChange={handleToggleChange}
+                >
+                  {weekdays.map((day) => (
+                    <ToggleGroupItem
+                      key={day.value}
+                      value={day.value}
+                      className="w-full"
+                    >
+                      {day.label}
+                    </ToggleGroupItem>
+                  ))}
+                </ToggleGroup>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardContent className="p-4">
+              <h3>Dias específicos Fechados</h3>
+              <Calendar
+                mode="multiple"
+                selected={selectedDates}
+                onSelect={(dates) => handleCalendarChange(dates ?? [])}
+                className="rounded-md border max-w-fit mx-auto mt-4"
+                disabled={(date) =>
+                  watch('weeklyClosedDays')!.some(
+                    (day) => day === date.getDay()
+                  )
+                }
+                showOutsideDays={false}
+              />
+              <div className="text-sm mt-4 text-center">
+                {selectedDates.length > 0 ? (
+                  <div>
+                    <p>Dias fechados: </p>
+                    <div className="flex gap-1 flex-wrap justify-center mt-2">
+                      {selectedDates.map((d, i) => (
+                        <Badge variant="outline" key={i}>
+                          {format(d, 'dd/MM')}
+                        </Badge>
+                      ))}
                     </div>
-                  ) : (
-                    <p>Nenhum dia fechado ainda.</p>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <p>Nenhum dia fechado ainda.</p>
+                )}
               </div>
-              <Button
-                type="submit"
-                className="w-full mt-auto bg-black hover:bg-gray-800 text-white"
-              >
-                Salvar Dados
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+
+          <Button
+            type="submit"
+            disabled={providerForm.formState.isSubmitting}
+            className="w-full mt-auto bg-black hover:bg-gray-800 text-white md:col-span-2"
+          >
+            {providerForm.formState.isSubmitting
+              ? 'Salvando..'
+              : 'Salvar Dados'}
+          </Button>
+        </form>
+      </Form>
     </motion.section>
   )
 }

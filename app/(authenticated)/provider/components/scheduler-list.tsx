@@ -76,7 +76,7 @@ export default function SchedulerList({ providerId }: { providerId: string }) {
     },
   })
 
-  const [showCanceled, setShowCanceled] = useState(false)
+  const [showCanceled, setShowCanceled] = useState(true)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -85,14 +85,21 @@ export default function SchedulerList({ providerId }: { providerId: string }) {
       { withCredentials: true }
     )
 
+    const notificationNewSound = new Audio('/new.wav')
+    const notificationCancelSound = new Audio('/error.wav')
+
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data)
+
       refetch()
       if (data.status === 'created') {
         toast({
           variant: 'success',
           title: 'Novo agendamento!',
           description: `${data.data.clientId.name} agendou ${data.data.serviceId.name} às ${data.data.time}h`,
+        })
+        notificationNewSound.play().catch((error) => {
+          console.warn('Erro ao tocar som:', error)
         })
       }
 
@@ -101,6 +108,9 @@ export default function SchedulerList({ providerId }: { providerId: string }) {
           variant: 'destructive',
           title: 'Agendamento Cancelado!',
           description: `${data.data.clientId.name} cancelou ${data.data.serviceId.name} às ${data.data.time}h`,
+        })
+        notificationCancelSound.play().catch((error) => {
+          console.warn('Erro ao tocar som:', error)
         })
       }
     }
@@ -183,9 +193,11 @@ export default function SchedulerList({ providerId }: { providerId: string }) {
             <p>Algo deu errado na listagem.</p>
             {error?.message ? <p>Erro: {error?.message}</p> : null}
           </div>
-        ) : !isLoading && !error && (!data || !data?.length) ? (
+        ) : !isLoading &&
+          !error &&
+          (!appointmentsFiltered || !appointmentsFiltered?.length) ? (
           <div className="grid place-items-center gap-4 p-8">
-            <p>Nenhum agendamento encontrado.</p>
+            <p className="text-center">Nenhum agendamento encontrado.</p>
           </div>
         ) : (
           <MotionCardsWrapper>
@@ -206,33 +218,40 @@ export default function SchedulerList({ providerId }: { providerId: string }) {
                     {appointment.canceled ? (
                       <Badge
                         variant="destructive"
-                        className="absolute bottom-2 right-2"
+                        className="absolute bottom-4 right-4"
                       >
                         Cancelado
                       </Badge>
                     ) : !isBefore ? (
-                      <AppointmentCancelButton id={appointment._id} />
+                      <AppointmentCancelButton
+                        id={appointment._id}
+                        refetch={() => refetch()}
+                      />
                     ) : null}
-                    <div className="flex justify-between">
+                    <div className="flex justify-end">
                       <Badge variant="outline">
-                        {formatDateToDDMMYYYY(appointment.date)}
+                        {formatDateToDDMMYYYY(appointment.date)} às{' '}
+                        {appointment.time}
                       </Badge>
-                      <span className="text-gray-500">
-                        horário: {appointment.time}
-                      </span>
                     </div>
-                    <div className="flex flex-col gap-2 justify-between">
-                      <p className="font-semibold">
-                        Cliente: {appointment.clientId.name}
+                    <div className="flex flex-col gap-1 justify-between">
+                      <p>
+                        <span className="font-semibold">Cliente: </span>
+                        {appointment.clientId.name}
                       </p>
-                      <p className="font-semibold">
-                        Serviço: {appointment.serviceId.name}
+                      <p>
+                        <span className="font-semibold">Serviço: </span>
+
+                        {appointment.serviceId.name}
                       </p>
-                      <p className="font-semibold">
-                        Preço: {formatBRL(appointment.serviceId.price)}
+                      <p>
+                        <span className="font-semibold">Preço: </span>
+
+                        {formatBRL(appointment.serviceId.price)}
                       </p>
-                      <p className="font-semibold">
-                        Duração: {appointment.serviceId.duration} min.
+                      <p>
+                        <span className="font-semibold">Duração: </span>
+                        {appointment.serviceId.duration} min.
                       </p>
                     </div>
                   </CardContent>

@@ -28,29 +28,20 @@ export default async function Page() {
   const provider = provRes.data
 
   return (
-    <>
-      <Button asChild size="icon">
-        <Link href="/provider" className="flex items-center">
-          <ChevronLeft className="h-4 w-4" />
-          <span className="sr-only">Voltar</span>
-        </Link>
-      </Button>
-
-      <ProviderForm
-        onSubmit={onProviderSubmit}
-        initValues={{
-          workingHours: provider?.workingHours
-            ? provider?.workingHours
-            : [{ start: '', end: '' }],
-          closedDates: provider?.closedDates ? provider?.closedDates : [],
-          image: provider?.image
-            ? process.env.NEXT_PUBLIC_API_PATH + provider.image
-            : '',
-          weeklyClosedDays: provider?.weeklyClosedDays
-            ? provider?.weeklyClosedDays
-            : [],
-        }}
-      />
-    </>
+    <ProviderForm
+      onSubmit={onProviderSubmit}
+      initValues={{
+        workingHours: provider?.workingHours
+          ? provider?.workingHours
+          : [{ start: '', end: '' }],
+        closedDates: provider?.closedDates ? provider?.closedDates : [],
+        image: provider?.image
+          ? process.env.NEXT_PUBLIC_API_PATH + provider.image
+          : '',
+        weeklyClosedDays: provider?.weeklyClosedDays
+          ? provider?.weeklyClosedDays
+          : [],
+      }}
+    />
   )
 }

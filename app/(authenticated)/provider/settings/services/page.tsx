@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { getOwnServices } from '@/http/fetch-services'
 import { formatBRL } from '@/lib/intl'
-import { Pencil, Plus } from 'lucide-react'
+import { ChevronLeft, Pencil, Plus } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import ServiceDeleteButton from './components/service-delete-button'
@@ -21,7 +21,16 @@ export default async function ServicesPage() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold">Serviços</h2>
+        <div className="flex gap-4 items-center">
+          <Button asChild size="icon">
+            <Link href="/provider" className="flex items-center">
+              <ChevronLeft className="h-4 w-4" />
+              <span className="sr-only">Voltar</span>
+            </Link>
+          </Button>
+
+          <h2 className="text-2xl font-semibold">Serviços</h2>
+        </div>
         <Button
           asChild
           className="bg-black text-white hover:bg-gray-800"

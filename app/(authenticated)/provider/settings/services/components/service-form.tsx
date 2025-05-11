@@ -95,21 +95,9 @@ export default function ServiceForm({
 
                   return (
                     <FormItem>
-                      <FormLabel>Imagem do Serviço</FormLabel>
+                      <FormLabel>Foto</FormLabel>
                       <FormControl>
                         <div className="flex flex-col gap-4">
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() =>
-                              document.getElementById('fileInput')?.click()
-                            }
-                          >
-                            {currentValue
-                              ? 'Trocar imagem'
-                              : 'Selecionar imagem'}
-                          </Button>
-
                           <input
                             id="fileInput"
                             type="file"
@@ -133,9 +121,21 @@ export default function ServiceForm({
                               alt="Preview"
                               width={96}
                               height={96}
-                              className="w-24 h-24 rounded-full object-cover object-center border-2 border-gray-200"
+                              className="w-24 h-24 mx-auto rounded-full object-cover object-center border-2 border-gray-200"
                             />
                           )}
+
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() =>
+                              document.getElementById('fileInput')?.click()
+                            }
+                          >
+                            {currentValue
+                              ? 'Trocar imagem'
+                              : 'Selecionar imagem'}
+                          </Button>
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -149,7 +149,7 @@ export default function ServiceForm({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nome do Serviço</FormLabel>
+                    <FormLabel>Nome</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -187,7 +187,7 @@ export default function ServiceForm({
                 name="duration"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Duração (min)</FormLabel>
+                    <FormLabel>Duração ( em minutos )</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -198,9 +198,10 @@ export default function ServiceForm({
 
               <Button
                 type="submit"
+                disabled={serviceForm.formState.isSubmitting}
                 className="w-full mt-auto bg-black hover:bg-gray-800 text-white"
               >
-                Salvar Serviço
+                {serviceForm.formState.isSubmitting ? 'Salvando' : 'Salvar'}
               </Button>
             </form>
           </Form>

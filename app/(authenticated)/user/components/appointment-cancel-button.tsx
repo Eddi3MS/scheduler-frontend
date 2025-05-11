@@ -5,7 +5,13 @@ import { useToast } from '@/hooks/use-toast'
 import { Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-export default function AppointmentCancelButton({ id }: { id: string }) {
+export default function AppointmentCancelButton({
+  id,
+  refetch,
+}: {
+  id: string
+  refetch: VoidFunction
+}) {
   const { toast } = useToast()
   const router = useRouter()
   const handleDelete = async () => {
@@ -31,7 +37,7 @@ export default function AppointmentCancelButton({ id }: { id: string }) {
         return
       }
 
-      router.refresh()
+      refetch()
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -41,9 +47,12 @@ export default function AppointmentCancelButton({ id }: { id: string }) {
     }
   }
   return (
-    <ButtonWithConfirmation action={handleDelete} actionLabel="Cancelar">
+    <ButtonWithConfirmation
+      action={handleDelete}
+      actionLabel="Confirmar cancelamento"
+    >
       <Button
-        className="absolute bottom-2 right-2"
+        className="absolute bottom-4 right-4"
         variant="destructive"
         size="sm"
       >
