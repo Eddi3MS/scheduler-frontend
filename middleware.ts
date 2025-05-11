@@ -4,7 +4,17 @@ import { verifyToken } from './lib/auth'
 
 const authRoutes = ['/', '/register']
 
-const publicRoutes = [...authRoutes, '/not-allowed']
+const publicRoutes = [
+  ...authRoutes,
+  '/not-allowed',
+  '/not-found',
+  '/sw.js',
+  '/manifest.ts',
+  '/manifest.webmanifest',
+  '/logo.png',
+  '/logo-192x192.png',
+  '/logo-512x521.png',
+]
 
 const providerRouterPrefix = '/provider'
 
