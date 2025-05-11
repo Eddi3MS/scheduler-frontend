@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'App de agendamentos flexível',
     start_url: '/',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#000000',
+    background_color: '#000000',
+    theme_color: '#ffffff',
     icons: [
       {
         src: '/logo-192x192.png',
