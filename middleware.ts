@@ -2,11 +2,12 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { verifyToken } from './lib/auth'
 
-const authRoutes = ['/', '/register']
+const authRoutes = ['/login', '/register']
 
 const publicRoutes = [
   ...authRoutes,
   '/not-allowed',
+  '/',
   '/not-found',
   '/sw.js',
   '/manifest.ts',
