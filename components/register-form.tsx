@@ -26,11 +26,14 @@ import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { redirectPaths, User } from '@/types/user'
+import { useState } from 'react'
 
 export default function RegisterForm() {
   const router = useRouter()
   const { setUser } = useUser()
   const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
@@ -41,11 +44,10 @@ export default function RegisterForm() {
     },
   })
 
-  const isLoading = form.formState.isSubmitting
-
   const onSubmit = async (values: RegisterSchema) => {
     try {
-      const response = await fetch(
+      setIsLoading(true)
+      const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_PATH}/api/user/register`,
         {
           method: 'POST',
@@ -57,36 +59,23 @@ export default function RegisterForm() {
         }
       )
 
-      if (!response.ok) {
-        toast({
-          variant: 'destructive',
-          title: 'Algo deu errado!',
-          description: 'Tente novamente mais tarde.',
-        })
-        return
+      const data = await res.json()
+
+      if (!res.ok || res.status !== 201) {
+        throw new Error(data?.error || data?.message || 'Falha na requisição')
       }
 
-      const data = await response.json()
-
-      if (response.status !== 201) {
-        toast({
-          variant: 'destructive',
-          title: 'Algo deu errado!',
-          description: data.error,
-        })
-        return
-      }
-
-      const route = data.role === 'admin' ? '/admin' : '/user'
+      const route = redirectPaths[data.role as keyof typeof redirectPaths]
 
       setUser(data)
       router.push(route)
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: 'destructive',
         title: 'Algo deu errado!',
-        description: 'Tente novamente mais tarde.',
+        description: error?.message || 'Tente novamente mais tarde.',
       })
+      setIsLoading(false)
     }
   }
 

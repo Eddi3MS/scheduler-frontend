@@ -14,20 +14,18 @@ export const metadata: Metadata = {
   description: 'Agende seus serviços de forma rápida e eficiente.',
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const initUser = await getUserId()
-
   return (
     <html lang="pt-br">
       <body
         className={`${inter.className} bg-gradient-to-b from-gray-50 to-gray-100`}
       >
         <QueryProvider>
-          <UserContextProvider initUser={initUser}>
+          <UserContextProvider>
             {children}
             <Toaster />
           </UserContextProvider>

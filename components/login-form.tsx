@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import { useUser } from '@/providers/user-context'
 import { LoginSchema, loginSchema } from '@/types/forms'
+import { redirectPaths, User } from '@/types/user'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
@@ -47,7 +48,7 @@ export default function LoginForm() {
     setIsLoading(true)
 
     try {
-      const response = await fetch(
+      const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_PATH}/api/user/login`,
         {
           method: 'POST',
@@ -59,23 +60,13 @@ export default function LoginForm() {
         }
       )
 
-      const data = await response.json()
+      const data = await res.json()
 
-      if (!response.ok) {
-        toast({
-          variant: 'destructive',
-          title: 'Algo deu errado!',
-          description: data.error,
-        })
-        return
+      if (!res.ok || res.status !== 201) {
+        throw new Error(data?.error || data?.message || 'Falha na requisição')
       }
 
-      const route =
-        data.role === 'admin'
-          ? '/admin'
-          : data.role === 'provider'
-          ? '/provider'
-          : '/user'
+      const route = redirectPaths[data.role as keyof typeof redirectPaths]
 
       setUser(data)
       router.push(route)
@@ -83,9 +74,8 @@ export default function LoginForm() {
       toast({
         variant: 'destructive',
         title: 'Algo deu errado!',
-        description: 'Tente novamente mais tarde.',
+        description: (error as any)?.message || 'Tente novamente mais tarde.',
       })
-    } finally {
       setIsLoading(false)
     }
   }

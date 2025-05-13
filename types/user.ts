@@ -4,3 +4,9 @@ export type User = {
   role: 'admin' | 'client' | 'provider'
   _id: string
 }
+
+export const redirectPaths = {
+  admin: '/admin',
+  client: '/user',
+  provider: '/provider',
+} as const

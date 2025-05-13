@@ -438,7 +438,11 @@ export default function Home() {
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                     </Button>
                   </Link>
-                  <Link href="tel:+1234567890">
+                  <Link
+                    href="https://wa.me/+5537999853557?text=Olá, vim da landing page"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <Button
                       size="lg"
                       variant="outline"

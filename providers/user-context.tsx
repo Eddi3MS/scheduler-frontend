@@ -1,5 +1,6 @@
 'use client'
 
+import getUserId from '@/actions/get-user-id'
 import { User as UserType } from '@/types/user'
 import {
   createContext,
@@ -7,6 +8,7 @@ import {
   ReactNode,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from 'react'
 
@@ -19,16 +21,21 @@ type UserContextData = {
 
 type UserContextProps = {
   children: ReactNode
-  initUser: User
 }
 
 const UserContext = createContext({ user: null } as UserContextData)
 
-export const UserContextProvider = ({
-  children,
-  initUser,
-}: UserContextProps) => {
-  const [user, setUser] = useState<User>(initUser)
+export const UserContextProvider = ({ children }: UserContextProps) => {
+  const [user, setUser] = useState<User>(null)
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const initUser = await getUserId()
+      setUser(initUser)
+    }
+
+    fetchUser()
+  }, [])
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
