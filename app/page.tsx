@@ -382,8 +382,7 @@ export default function Home() {
                         Horários de Funcionamento:
                       </p>
                       <ul className="list-none">
-                        <li>Segunda a Sexta: 9h - 19h</li>
-                        <li>Sábado: 9h - 15h</li>
+                        <li>Segunda a Sábado: 8h - 18h</li>
                         <li>Domingo: Fechado</li>
                       </ul>
                     </div>
