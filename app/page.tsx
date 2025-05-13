@@ -377,15 +377,7 @@ export default function Home() {
                       <p className="font-medium text-lg">Endereço:</p>
                       <p>Rua Exemplo, 123 - Centro, São Paulo - SP</p>
                     </div>
-                    <div className="mb-4">
-                      <p className="font-medium text-lg">
-                        Horários de Funcionamento:
-                      </p>
-                      <ul className="list-none">
-                        <li>Segunda a Sábado: 8h - 18h</li>
-                        <li>Domingo: Fechado</li>
-                      </ul>
-                    </div>
+
                     <div className="mb-4">
                       <p className="font-medium text-lg">Entre em Contato:</p>
                       <ul className="list-none">
@@ -402,6 +394,16 @@ export default function Home() {
                           contato@barbearia.com
                         </li>
                       </ul>
+                      <Link href="/login">
+                        <Button
+                          size="lg"
+                          className="group h-12 bg-orange-600 px-6 text-white hover:bg-orange-600/90"
+                        >
+                          <Calendar className="mr-2 h-5 w-5" />
+                          Agende direto pelo aplicativo
+                          <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>
