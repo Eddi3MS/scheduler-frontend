@@ -397,10 +397,10 @@ export default function Home() {
                       <Link href="/login">
                         <Button
                           size="lg"
-                          className="group h-12 bg-orange-600 px-6 text-white hover:bg-orange-600/90"
+                          className="group mt-4 h-12 bg-orange-600 px-6 text-white hover:bg-orange-600/90"
                         >
                           <Calendar className="mr-2 h-5 w-5" />
-                          Agende direto pelo aplicativo
+                          Agende agora
                           <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                         </Button>
                       </Link>
