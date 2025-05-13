@@ -62,7 +62,7 @@ export default function LoginForm() {
 
       const data = await res.json()
 
-      if (!res.ok || res.status !== 201) {
+      if (!res.ok || res.status !== 200) {
         throw new Error(data?.error || data?.message || 'Falha na requisição')
       }
 
