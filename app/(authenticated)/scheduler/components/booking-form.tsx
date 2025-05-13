@@ -27,22 +27,7 @@ import ServiceStep from './components/ServiceStep'
 import { createAppointment } from '@/http/fetch-appointment'
 import { useToast } from '@/hooks/use-toast'
 import { formatDate } from '@/lib/date-fns'
-
-// Generate time slots from 8:00 to 18:00 in 30-minute intervals
-const generateTimeSlots = () => {
-  const slots = []
-  for (let hour = 8; hour <= 18; hour++) {
-    for (const minute of [0, 30]) {
-      if (hour === 18 && minute === 30) continue // Skip 18:30
-      const formattedHour = hour.toString().padStart(2, '0')
-      const formattedMinute = minute.toString().padStart(2, '0')
-      slots.push(`${formattedHour}:${formattedMinute}`)
-    }
-  }
-  return slots
-}
-
-export const timeSlots = generateTimeSlots()
+import { useQueryClient } from '@tanstack/react-query'
 
 const stepVariants = {
   hidden: { opacity: 0 },
@@ -51,6 +36,8 @@ const stepVariants = {
 }
 
 export default function BookingForm({ providers }: { providers: Provider[] }) {
+  const queryClient = useQueryClient()
+
   const [step, setStep] = useState(1)
 
   const [provider, setProvider] = useState<Provider | null>(null)
@@ -94,6 +81,7 @@ export default function BookingForm({ providers }: { providers: Provider[] }) {
         description: res.error || 'Tente novamente mais tarde.',
       })
     } else {
+      queryClient.invalidateQueries({ queryKey: ['user-appointments'] })
       toast({
         variant: 'success',
         title: 'Sucesso!',
