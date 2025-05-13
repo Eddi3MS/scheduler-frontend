@@ -16,6 +16,15 @@ export function formatDateToDDMMYYYY(dateStr: string): string {
   return format(date, 'dd/MM/yyyy')
 }
 
+export function isDateTimeBeforeNow(dateStr: string, timeStr: string): boolean {
+  const dateTime = parse(
+    `${dateStr} ${timeStr}`,
+    'yyyy-MM-dd HH:mm',
+    new Date()
+  )
+  return isBefore(dateTime, new Date())
+}
+
 export function isBeforeToday(date: Date) {
   return isBefore(startOfDay(date), startOfDay(new Date()))
 }

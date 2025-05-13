@@ -22,6 +22,7 @@ import { useToast } from '@/hooks/use-toast'
 import {
   formatDateToDDMMYYYY,
   isBeforeToday,
+  isDateTimeBeforeNow,
   isTimeBeforeNow,
 } from '@/lib/date-fns'
 import { formatBRL } from '@/lib/intl'
@@ -31,7 +32,7 @@ import { useQuery } from '@tanstack/react-query'
 import { format, isToday, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { CalendarIcon, CheckIcon, ListFilterIcon, Loader2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import AppointmentCancelButton from '../../user/components/appointment-cancel-button'
 import { PopoverClose } from '@radix-ui/react-popover'
 
@@ -76,7 +77,8 @@ export default function SchedulerList({ providerId }: { providerId: string }) {
     },
   })
 
-  const [showCanceled, setShowCanceled] = useState(true)
+  const [showCanceled, setShowCanceled] = useState(false)
+  const [showPassed, setShowPassed] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -120,13 +122,27 @@ export default function SchedulerList({ providerId }: { providerId: string }) {
     }
   })
 
-  const handleShow = () => {
+  const handleToggleCanceled = () => {
     setShowCanceled((curr) => !curr)
   }
 
-  const appointmentsFiltered = showCanceled
-    ? data
-    : data?.filter((ap) => !ap.canceled)
+  const handleTogglePassed = () => {
+    setShowPassed((curr) => !curr)
+  }
+
+  const appointmentsFiltered = useMemo(() => {
+    if (!data) return []
+
+    return data.filter((ap) => {
+      const isCanceled = ap.canceled
+      const isPassed = isDateTimeBeforeNow(ap.date, ap.time)
+
+      if (!showCanceled && isCanceled) return false
+      if (!showPassed && isPassed) return false
+
+      return true
+    })
+  }, [data, showCanceled, showPassed])
 
   return (
     <>
@@ -171,11 +187,22 @@ export default function SchedulerList({ providerId }: { providerId: string }) {
               <DropdownMenuItem asChild>
                 <Button
                   variant="ghost"
-                  onClick={handleShow}
+                  onClick={handleToggleCanceled}
                   size="sm"
                   className="w-full justify-start"
                 >
-                  {showCanceled ? <CheckIcon /> : ''} Mostrar Cancelados
+                  {showCanceled ? 'Ocultar Cancelados' : 'Exibir Cancelados'}
+                </Button>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem asChild>
+                <Button
+                  variant="ghost"
+                  onClick={handleTogglePassed}
+                  size="sm"
+                  className="w-full justify-start"
+                >
+                  {showPassed ? 'Ocultar Passados' : 'Exibir Passados'}
                 </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
