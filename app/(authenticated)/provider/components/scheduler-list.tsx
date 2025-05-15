@@ -43,7 +43,7 @@ export default function SchedulerList({ providerId }: { providerId: string }) {
   const formatted = dateInput ? format(dateInput, 'yyyy-MM-dd') : undefined
 
   const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ['appointments', providerId, formatted],
+    queryKey: ['provider-appointments', providerId, formatted],
     queryFn: async () => {
       try {
         const queryParams = new URLSearchParams()

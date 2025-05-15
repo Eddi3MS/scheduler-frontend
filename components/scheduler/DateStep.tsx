@@ -6,9 +6,8 @@ import { getAvailableTime } from '@/http/fetch-appointment'
 import { formatDate, isBeforeToday } from '@/lib/date-fns'
 import { containerVariants, itemVariants } from '@/lib/motion'
 import { Provider } from '@/types/provider'
-import { isBefore, startOfDay } from 'date-fns'
 import { motion } from 'framer-motion'
-import { CalendarIcon, Clock, Loader2Icon } from 'lucide-react'
+import { CalendarIcon, Clock } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 export default function DateStep({
@@ -61,9 +60,9 @@ export default function DateStep({
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="grid grid-cols-1 md:grid-cols-2 gap-8 min-w-[min(90%,600px)]"
+      className="grid grid-cols-1 md:grid-cols-2 gap-4 min-w-[min(90%,600px)]"
     >
-      <motion.div variants={itemVariants} className="bg-white p-2">
+      <motion.div variants={itemVariants} className="bg-white">
         <div className="flex items-center mb-4">
           <CalendarIcon className="h-5 w-5 text-black mr-2" />
           <h3 className="font-medium text-lg">Selecione a Data</h3>
@@ -74,6 +73,7 @@ export default function DateStep({
           onSelect={setDate}
           className="rounded-md border"
           disabled={(date) =>
+            !serviceId ||
             isBeforeToday(date) ||
             !!provider?.weeklyClosedDays.includes(date.getDay()) ||
             !!provider?.closedDates?.includes(formatDate(date))
@@ -81,7 +81,7 @@ export default function DateStep({
           showOutsideDays={false}
         />
       </motion.div>
-      <motion.div variants={itemVariants} className="bg-white p-2">
+      <motion.div variants={itemVariants} className="bg-white">
         <div className="flex items-center mb-4">
           <Clock className="h-5 w-5 text-black mr-2" />
           <h3 className="font-medium text-lg">Selecione o horário</h3>

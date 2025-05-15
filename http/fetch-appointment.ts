@@ -83,7 +83,36 @@ export async function createAppointment(
     if (!res.ok) {
       return {
         success: false,
-        error: data?.message || 'Erro ao buscar agendamentos.',
+        error: data?.message || 'Erro ao criar agendamento.',
+      }
+    }
+
+    return { success: true, data }
+  } catch (error) {
+    return { success: false, error: 'Erro de conexão com o servidor.' }
+  }
+}
+
+export async function createAppointmentByProvider(
+  values: any
+): Promise<ApiResponse<Appointment>> {
+  try {
+    const res = await fetchWithToken(
+      `${process.env.NEXT_PUBLIC_API_PATH}/api/appointments/create-by-provider`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      }
+    )
+    const data = await res.json()
+
+    if (!res.ok) {
+      return {
+        success: false,
+        error: data?.message || 'Erro ao criar agendamento.',
       }
     }
 

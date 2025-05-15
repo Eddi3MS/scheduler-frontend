@@ -1,6 +1,6 @@
 import { PageTransition } from '@/components/ui/page-transition'
 import { getProviders } from '@/http/fetch-providers'
-import BookingForm from './components/booking-form'
+import BookingForm from '@/components/scheduler/booking-form'
 import { redirect } from 'next/navigation'
 
 export default async function Service() {
