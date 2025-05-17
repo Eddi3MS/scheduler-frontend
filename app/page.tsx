@@ -67,7 +67,7 @@ const benefits = [
 export default function Home() {
   return (
     <main className="">
-      <section className="relative overflow-hidden bg-black py-20 md:py-28 lg:py-32">
+      <div className="relative overflow-hidden bg-black py-20 md:py-28 lg:py-32">
         <div className="container relative z-10 px-4 md:px-6">
           <div className="mx-auto max-w-5xl text-center">
             <AnimateOnView asChild direction="down" delay={100}>
@@ -132,6 +132,7 @@ export default function Home() {
                   height={504}
                   alt="barber shop"
                   className="w-full aspect-[16/9]"
+                  priority
                 />
               </div>
             </AnimateOnView>
@@ -211,7 +212,7 @@ export default function Home() {
             ></path>
           </svg>
         </div>
-      </section>
+      </div>
       <section className="py-20 md:py-14 bg-white" id="services">
         <div className="container px-4 md:px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center">
