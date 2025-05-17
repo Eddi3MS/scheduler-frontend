@@ -98,7 +98,7 @@ export default function Home() {
                 <Link href="/login">
                   <Button
                     size="lg"
-                    className="group h-12 bg-orange-500 px-6 text-white hover:bg-orange-600"
+                    className="group h-12 bg-orange-700 px-6 text-white hover:bg-orange-600"
                   >
                     <Calendar className="mr-2 h-5 w-5" />
                     Agendar
@@ -540,6 +540,7 @@ export default function Home() {
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   className="w-full aspect-video"
+                  title="Mapa do local"
                 ></iframe>
               </div>
 
