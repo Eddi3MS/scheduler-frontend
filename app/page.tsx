@@ -131,7 +131,7 @@ export default function Home() {
                   width={896}
                   height={504}
                   alt="barber shop"
-                  className="w-full aspect-[16/9]"
+                  className="w-full"
                   priority
                 />
               </div>
