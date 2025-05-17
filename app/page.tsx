@@ -78,7 +78,7 @@ export default function Home() {
             </AnimateOnView>
 
             <AnimateOnView asChild direction="down" delay={200}>
-              <h1 className="mb-6 text-white font-display text-4xl font-bold tracking-tight text-transparent sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="mb-6 text-white font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
                 Seu estilo, <br className="md:hidden" />
                 Nossa Paixão
               </h1>
