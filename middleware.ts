@@ -31,7 +31,7 @@ export async function middleware(request: NextRequest) {
   const res = NextResponse.next()
 
   if (!isPublicRoute && !token) {
-    const newUrl = new URL('/', request.nextUrl.origin)
+    const newUrl = new URL('/login', request.nextUrl.origin)
     return NextResponse.redirect(newUrl)
   }
 
