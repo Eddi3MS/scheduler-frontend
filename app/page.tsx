@@ -128,8 +128,7 @@ export default function Home() {
               <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-white/10  backdrop-blur-sm shadow-md">
                 <Image
                   src="/barber.jpg"
-                  width={768}
-                  height={512}
+                  layout="fill"
                   alt="barber shop"
                   className="w-full aspect-[16/9]"
                 />
